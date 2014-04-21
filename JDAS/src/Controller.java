@@ -14,6 +14,7 @@ import java.util.*;
  */
 public class Controller {
 
+    private Model m;
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.1F142A4E-D39E-0BD4-1AFB-745615ACC24F]
     // </editor-fold> 
@@ -23,8 +24,15 @@ public class Controller {
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.B60F2BDE-46D1-8EA8-6203-F46C3D0AB2D0]
     // </editor-fold> 
-    public void uploadPublication (File pFile) {
-        
+    public void uploadPublication (File pFile) throws FileNotFoundException {
+        ArrayList<ArrayList<String> > list = parseCSV(pFile);
+        boolean flag=m.updatePublication(list);
+        if(flag==true){
+            
+        }
+        else{
+            
+        }//to be updated
     }
     
     public ArrayList<ArrayList<String> > parseCSV (File cFile) throws FileNotFoundException{

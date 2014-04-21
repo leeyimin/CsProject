@@ -371,7 +371,8 @@
 <UML:Operation xmi.id="DCE.57EFE2B1-920D-5F76-3F83-1B9C91C53069" name="reportUpdateFail" owner="DCE.008C1887-539E-73C8-1B7F-A0F485CBA1AA"><UML:Element.ownedElement>
 <UML:Parameter xmi.id="DCE.B389AEFB-032E-76D3-DDEA-5D70A121145A" type="DCE.E61D73A2-B548-71A6-310B-5E99470FC3B4" direction="result" owner="DCE.57EFE2B1-920D-5F76-3F83-1B9C91C53069"><UML:TypedElement.multiplicity>
 <UML:Multiplicity xmi.id="DCE.1754941D-42BB-9E96-0A07-0F9A883CC702"/></UML:TypedElement.multiplicity></UML:Parameter></UML:Element.ownedElement><UML:Element.presentation>
-</UML:Element.presentation></UML:Operation></UML:Element.ownedElement></UML:Class>
+</UML:Element.presentation></UML:Operation>
+<UML:SourceFileArtifact xmi.id="DCE.BEAF3187-7D0F-F866-EFBC-F097DEC5EDD0" name="Unnamed" owner="DCE.008C1887-539E-73C8-1B7F-A0F485CBA1AA" sourcefile="..\JDAS\src\View1.java"/></UML:Element.ownedElement></UML:Class>
 <UML:Class xmi.id="DCE.8C69639F-7F97-2742-EA03-6E1CB405098B" name="Controller" owner="DCE.F418E4DC-5165-405A-77F8-8A090C37A7BD"><UML:Element.ownedElement>
 <UML:Operation xmi.id="DCE.1F142A4E-D39E-0BD4-1AFB-745615ACC24F" name="Controller" isConstructor="true" owner="DCE.8C69639F-7F97-2742-EA03-6E1CB405098B"/>
 <UML:Part xmi.id="DCE.434138B6-307F-0BD4-D4D3-B33987F2E40F" visibility="private" name="Unnamed" type="DCE.8C69639F-7F97-2742-EA03-6E1CB405098B" owner="DCE.8C69639F-7F97-2742-EA03-6E1CB405098B" end="DCE.7633368B-3A62-5031-B9ED-ABD3CBC9ADB4 DCE.F4C71215-147C-6884-39C5-DD7BFACCF87C"/>
