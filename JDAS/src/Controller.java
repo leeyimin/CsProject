@@ -33,7 +33,7 @@ public class Controller {
         StringTokenizer st;
         ArrayList<String> list;
         while(sc.hasNextLine()){
-            st=new StringTokenizer(sc.nextLine(),",");
+            st=new StringTokenizer(sc.nextLine(),"\",");
             list= new ArrayList<>();
             while(st.hasMoreTokens()){
                 String str =st.nextToken();
