@@ -58,4 +58,8 @@ public class Controller {
         return res;
     }
     
+    public void mergeAndUpdateRIERecords (File file) {
+        
+    }
+    
 }

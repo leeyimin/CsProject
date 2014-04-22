@@ -1,3 +1,6 @@
+
+import javax.swing.JFrame;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,9 +16,10 @@ public class MainJFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainJFrame
      */
-    public MainJFrame() {
+    Controller co;
+    public MainJFrame(Controller con) {
         initComponents();
-        
+        co = con;
         
     }
 
@@ -147,7 +151,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        UploadRIEOption u = new UploadRIEOption();
+        JFrame u = new UploadRIEOption(co);
         u.setVisible(true);
         u.setAlwaysOnTop(true);
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -182,11 +186,13 @@ public class MainJFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        final Controller c = new Controller();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainJFrame().setVisible(true);
+                new MainJFrame(c).setVisible(true);
             }
         });
     }
