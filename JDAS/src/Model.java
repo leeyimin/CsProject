@@ -59,7 +59,7 @@ public class Model {
             String delQuery = "DELETE FROM publication";
             stmt.executeUpdate(delQuery);
             
-            System.out.println(pFile.getAbsolutePath());
+            //System.out.println(pFile.getAbsolutePath());
             String loadQuery= "LOAD DATA LOCAL INFILE \'" + pFile.getAbsolutePath().replace("\\", "\\\\")
                     + "\' INTO TABLE publication FIELDS TERMINATED BY \',\'" 
                     +" OPTIONALLY ENCLOSED BY \'\"\'"
