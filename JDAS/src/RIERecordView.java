@@ -1,4 +1,11 @@
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 /*
@@ -22,10 +29,56 @@ public class RIERecordView extends javax.swing.JFrame {
     public RIERecordView(Controller c) {
         initComponents();
         controller = c;
-        
-        rsData = buildTableModel(c.getResultSet("select * from rierecords"));
+        try {
+            rsData = buildTableModel(c.getResultSet("select * from rierecords"));
+        } catch (SQLException ex) {
+            Logger.getLogger(RIERecordView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
+    
+    public static TableModel buildTableModel(ResultSet rs) throws SQLException {  
+        String[] s = null;  
+        ArrayList<Object> l = new ArrayList<Object>();  
+        Object[][] data1 = null;  
+  
+        ResultSetMetaData metaData = rs.getMetaData();  
+  
+        // names of columns  
+        // List<String> columnNamesList = new ArrayList<String>();  
+  
+        // int columnCount = columnNames.size();  
+        int columnCount = metaData.getColumnCount();  
+        for (int column = 0; column <= columnCount; column++) {  
+            s = new String[columnCount];  
+            s[column] = metaData.getColumnName(column);  
+            // columnNames.add(metaData.getColumnName(column));  
+  
+        }  
+  
+        // data of the table  
+        // Vector<Vector<Object>> data = new Vector<Vector<Object>>();  
+        while (rs.next()) {  
+            // Vector<Object> vector = new Vector<Object>();  
+  
+            for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {  
+                l.add(rs.getObject(columnIndex));  
+  
+                // vector.add(rs.getObject(columnIndex));  
+  
+                // values.toArray(new Object[][] {})  
+            }  
+            data1 = l.toArray(new Object[][] {});  
+            // data.add(vector);  
+        }  
+  
+        DefaultTableModel t_model = new DefaultTableModel(data1, s);  
+        return t_model; 
+  
+    }  
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
