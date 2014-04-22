@@ -73,11 +73,6 @@ public class Model {
         }
         return false;
     }
-    
-    public ResultSet getRecords( String query ) throws SQLException {
-        Statement statement = conn.createStatement();
-        return statement.executeQuery( query );
-    }
 
     public void connect(){
         try {

@@ -103,7 +103,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
         };
 
         try{
-            updateTable( cont.getRecords( queries[index] ) );
+            updateTable( cont.getResultSet( queries[index] ) );
         }
         catch( SQLException exp ){}
     }//GEN-LAST:event_jComboBox1ActionPerformed
