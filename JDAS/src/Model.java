@@ -1,4 +1,5 @@
 
+import java.io.*;
 import java.sql.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -52,6 +53,28 @@ public class Model {
         }
     }
     
+    public boolean updatePublication (File pFile){
+        try {
+            Statement stmt = conn.createStatement();
+            String delQuery = "DELETE FROM publication";
+            stmt.executeUpdate(delQuery);
+            
+            System.out.println(pFile.getAbsolutePath());
+            String loadQuery= "LOAD DATA LOCAL INFILE \'" + pFile.getAbsolutePath().replace("\\", "\\\\")
+                    + "\' INTO TABLE publication FIELDS TERMINATED BY \',\'" 
+                    +" OPTIONALLY ENCLOSED BY \'\"\'"
+                    +" LINES TERMINATED BY \'\\n\'";
+            stmt.executeUpdate(loadQuery);
+
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally{
+            return false;
+        }
+    }
+    
     public void connect(){
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -59,7 +82,7 @@ public class Model {
             String url = "jdbc:mysql://localhost:3306/";
             String dbName = "JDASdb";
             String userName = "root";
-            String password = "password";
+            String password = "";
             
             //Create a connect object (via getConnection)
             conn = DriverManager.getConnection(url+dbName,userName,password);

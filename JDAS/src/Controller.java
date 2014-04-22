@@ -19,6 +19,7 @@ public class Controller {
     // #[regen=yes,id=DCE.1F142A4E-D39E-0BD4-1AFB-745615ACC24F]
     // </editor-fold> 
     public Controller () {
+        m=new Model();
     }
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -36,6 +37,7 @@ public class Controller {
     }
     
     public ArrayList<ArrayList<String> > parseCSV (File cFile) throws FileNotFoundException{
+        //this assumes that every field is surrounded by " and separated by ,
         ArrayList<ArrayList<String> > res = new ArrayList<>();
         Scanner sc= new Scanner(cFile);
         StringTokenizer st;
@@ -46,13 +48,7 @@ public class Controller {
             while(st.hasMoreTokens()){
                 String str =st.nextToken();
                 if(str.equals(",")) continue;
-                if(str.charAt(0)=='\"' && str.charAt(str.length()-1)=='\"'){
-                    list.add(str);
-                }//check if "" are present
-                else{
-                    list.add("\""+str+"\"");
-                }
-                //not sure if " are req yet
+                list.add(str);
             }
             //System.out.println("l: "+list.size());
             res.add(list);

@@ -55,4 +55,16 @@ public class ControllerTest {
             System.out.println("");
         }
     }
+    
+    @Test
+    public void tryUploadPublication() throws Exception{
+        Controller c= new Controller();
+        c.uploadPublication(new File("parseTest.csv"));
+    }
+    
+    @Test
+    public void tryModelFile() throws Exception{
+        Model m= new Model();
+        m.updatePublication(new File("parseTest2.csv"));
+    }
 }
