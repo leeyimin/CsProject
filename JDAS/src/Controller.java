@@ -12,9 +12,12 @@ import java.util.*;
  *
  * @author Acer
  */
-public class Controller {
+public class Controller extends Observable{
 
     private Model m;
+    
+    String updateStr;
+    
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.1F142A4E-D39E-0BD4-1AFB-745615ACC24F]
     // </editor-fold> 
@@ -26,10 +29,12 @@ public class Controller {
     // #[regen=yes,id=DCE.B60F2BDE-46D1-8EA8-6203-F46C3D0AB2D0]
     // </editor-fold> 
     public void uploadPublication (File pFile) throws FileNotFoundException {
-        ArrayList<ArrayList<String> > list = parseCSV(pFile);
-        boolean flag=m.updatePublication(list);
+        boolean flag=m.updatePublication(pFile);
         if(flag==true){
-            
+            setChanged();
+            updateStr = "Publication List (internal)";
+            notifyObservers();
+            System.out.println(this.countObservers());
         }
         else{
             

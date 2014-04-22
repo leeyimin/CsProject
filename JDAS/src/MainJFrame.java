@@ -1,8 +1,8 @@
 
 
 import java.io.FileNotFoundException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
+import java.util.logging.*;
 import javax.swing.*;
 
 
@@ -16,7 +16,7 @@ import javax.swing.*;
  *
  * @author michelle
  */
-public class MainJFrame extends javax.swing.JFrame {
+public class MainJFrame extends javax.swing.JFrame implements Observer{
 
     /**
      * Creates new form MainJFrame
@@ -25,7 +25,7 @@ public class MainJFrame extends javax.swing.JFrame {
     public MainJFrame(Controller con) {
         initComponents();
         co = con;
-        
+        co.addObserver(this);
         this.setLocationRelativeTo(null);
         
     }
@@ -190,6 +190,14 @@ public class MainJFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    public void reportUpdateSuccess(String str){
+        jLabel1.setText(str);
+    }
+    
+    public void reportUpdateFail(String str){
+        jLabel1.setText(str);
+    }
+        
     /**
      * @param args the command line arguments
      */
@@ -216,15 +224,14 @@ public class MainJFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MainJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
-        final Controller c = new Controller();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainJFrame(c).setVisible(true);
+                new MainJFrame(new Controller()).setVisible(true);
             }
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -238,4 +245,10 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update(Observable o, Object arg) {
+        System.out.println("gogogo");
+        jLabel1.setText(co.updateStr +" has been successfully updated.");
+    }
 }

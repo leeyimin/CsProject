@@ -69,10 +69,9 @@ public class Model {
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
-        finally{
-            return false;
-        }
+        return false;
     }
     
     public void connect(){
