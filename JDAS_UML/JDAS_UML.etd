@@ -414,4 +414,5 @@
 
 
 <UML:DataType xmi.id="DCE.06FF62CD-14BF-C1CA-502D-9036D5516429" name="boolean" owner="DCE.F418E4DC-5165-405A-77F8-8A090C37A7BD"/>
-<UML:DataType xmi.id="DCE.ECB7BDBE-BE60-153A-2A80-E44CDDD7CBAD" name="ArrayList&lt;ArrayList&lt;String&gt;&gt;" owner="DCE.F418E4DC-5165-405A-77F8-8A090C37A7BD"/></UML:Element.ownedElement></UML:Project></XMI.content> </XMI>
+<UML:DataType xmi.id="DCE.ECB7BDBE-BE60-153A-2A80-E44CDDD7CBAD" name="ArrayList&lt;ArrayList&lt;String&gt;&gt;" owner="DCE.F418E4DC-5165-405A-77F8-8A090C37A7BD"/>
+<UML:Interaction xmi.id="DCE.6D27478C-15B3-B365-0BA8-3BDF3545F650" name="Sequence Diagram Publication pt2" owner="DCE.F418E4DC-5165-405A-77F8-8A090C37A7BD"/></UML:Element.ownedElement></UML:Project></XMI.content> </XMI>
