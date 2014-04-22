@@ -23,6 +23,8 @@ public class MainJFrame extends javax.swing.JFrame {
         initComponents();
         co = con;
         
+        this.setLocationRelativeTo(null);
+        
     }
 
     /**
@@ -159,6 +161,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         JFrame u = new UploadRIEOption(co);
+        u.setLocationRelativeTo(this);
         u.setVisible(true);
         u.setAlwaysOnTop(true);
     }//GEN-LAST:event_jButton1ActionPerformed
