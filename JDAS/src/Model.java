@@ -123,6 +123,20 @@ public class Model {
         }
         
         
+        
+        
+    }
+    
+    public ResultSet getResultSet(String s) {
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("select * from " + s);
+            
+            return rs;
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null; // TODO look at this later
     }
 
 }

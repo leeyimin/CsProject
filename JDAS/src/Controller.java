@@ -1,5 +1,6 @@
 
 import java.io.*;
+import java.sql.ResultSet;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,6 +72,10 @@ public class Controller extends Observable{
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public ResultSet getResultSet(String s) {
+        return m.getResultSet(s);
     }
     
 }
