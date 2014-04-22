@@ -130,7 +130,7 @@ public class Model {
     public ResultSet getResultSet(String s) {
         try {
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from " + s);
+            ResultSet rs = stmt.executeQuery( s);
             
             return rs;
         } catch (SQLException ex) {

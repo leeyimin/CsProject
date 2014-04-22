@@ -23,7 +23,7 @@ public class RIERecordView extends javax.swing.JFrame {
         initComponents();
         controller = c;
         
-        rsData = buildTableModel();
+        rsData = buildTableModel(c.getResultSet("select * from rierecords"));
     }
 
     /**
