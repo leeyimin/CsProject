@@ -82,7 +82,7 @@ public class Model {
             String url = "jdbc:mysql://localhost:3306/";
             String dbName = "JDASdb";
             String userName = "root";
-            String password = "";
+            String password = "65644157";
             
             //Create a connect object (via getConnection)
             conn = DriverManager.getConnection(url+dbName,userName,password);
