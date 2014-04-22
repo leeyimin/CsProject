@@ -64,12 +64,17 @@ public class Controller extends Observable{
         return res;
     }//to be improved
     
-    public void mergeAndUpdateRIERecords (File file) {
-        try {
-            m.mergeAndUpdateRIERecords(this.parseCSV(file));
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+    public void mergeAndUpdate (String tblname, File file) throws Exception {
+      
+        ArrayList<ArrayList<String> > addList = parseCSV(file);
+        for(ArrayList<String> list: addList){
+            ResultSet rs = m.hasConflict(tblname, list);
+            if(rs!=null){
+                
+            }//show dialog for user to choose
+            m.addRecord(tblname,list);
         }
+        //show dialog for successful update?
     }
     
     public ResultSet getResultSet(String s) {

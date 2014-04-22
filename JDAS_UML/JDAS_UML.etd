@@ -74,7 +74,7 @@
 
 </UML:Element.presentation></UML:Operation>
 <UML:SourceFileArtifact xmi.id="DCE.9AE7A0C7-FDD9-691D-1D7F-F770BA9519E4" name="Unnamed" owner="DCE.C63ACCD1-B180-39EE-C54B-B45A5A53D44D" sourcefile="..\JDAS\src\Model.java"/>
-<UML:Operation xmi.id="DCE.E7174803-93B7-714C-74A6-5253BBC88DAD" name="isPresent" owner="DCE.C63ACCD1-B180-39EE-C54B-B45A5A53D44D"><UML:Element.ownedElement>
+<UML:Operation xmi.id="DCE.E7174803-93B7-714C-74A6-5253BBC88DAD" name="hasConflict" owner="DCE.C63ACCD1-B180-39EE-C54B-B45A5A53D44D"><UML:Element.ownedElement>
 <UML:Parameter xmi.id="DCE.D98D0F61-67F9-BAB6-4B4A-18C022B114CE" type="DCE.06FF62CD-14BF-C1CA-502D-9036D5516429" direction="result" owner="DCE.E7174803-93B7-714C-74A6-5253BBC88DAD"><UML:TypedElement.multiplicity>
 <UML:Multiplicity xmi.id="DCE.AA7983B4-8A0C-12E7-3F04-C5FF63322DF8"/></UML:TypedElement.multiplicity></UML:Parameter>
 <UML:Parameter xmi.id="DCE.9C3F15A1-25AA-D066-40D4-8371391BBDB2" type="DCE.94D32B49-3A2A-1190-1486-ADEB7B73A41A" name="tblname" owner="DCE.E7174803-93B7-714C-74A6-5253BBC88DAD"><UML:TypedElement.multiplicity>

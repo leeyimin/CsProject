@@ -139,5 +139,13 @@ public class Model {
         return null; // TODO look at this later
     }
 
+    public ResultSet hasConflict(String tblname, ArrayList<String> list) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    void addRecord(String tblname, ArrayList<String> list) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
 
