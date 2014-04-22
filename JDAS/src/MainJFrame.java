@@ -1,6 +1,10 @@
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import javax.swing.*;
+=======
+import javax.swing.JFrame;
+>>>>>>> 2676836e10c36bc21647bfed967d5a10e58c0f96
 =======
 import javax.swing.JFrame;
 >>>>>>> 2676836e10c36bc21647bfed967d5a10e58c0f96
