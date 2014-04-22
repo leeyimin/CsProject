@@ -1,6 +1,8 @@
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -64,7 +66,11 @@ public class Controller extends Observable{
     }
     
     public void mergeAndUpdateRIERecords (File file) {
-        
+        try {
+            m.mergeAndUpdateRIERecords(this.parseCSV(file));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }
