@@ -1,5 +1,8 @@
 
 
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 
@@ -178,6 +181,11 @@ public class MainJFrame extends javax.swing.JFrame {
         if(returnVal == JFileChooser.APPROVE_OPTION) {
             System.out.println("You chose to open this file: " +
                 fc.getSelectedFile().getName());
+            try {
+                co.uploadPublication(fc.getSelectedFile());
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
     }//GEN-LAST:event_jButton3ActionPerformed
