@@ -27,10 +27,8 @@ public class Controller extends Observable{
     public Controller () {
         m=new Model();
     }
-
-    // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
-    // #[regen=yes,id=DCE.B60F2BDE-46D1-8EA8-6203-F46C3D0AB2D0]
-    // </editor-fold> 
+/*
+    
     public void uploadPublication (File pFile) throws FileNotFoundException {
         boolean flag=m.updatePublication(pFile);
         if(flag==true){
@@ -43,7 +41,7 @@ public class Controller extends Observable{
             
         }//to be updated
     }
-    
+    */
     public ArrayList<ArrayList<String> > parseCSV (File cFile) throws FileNotFoundException{
         //this assumes that every field is surrounded by " and separated by ,
         ArrayList<ArrayList<String> > res = new ArrayList<>();
@@ -64,7 +62,7 @@ public class Controller extends Observable{
         //System.out.println("r: "+res.size());
         
         return res;
-    }
+    }//to be improved
     
     public void mergeAndUpdateRIERecords (File file) {
         try {
