@@ -158,17 +158,18 @@ public class ViewRIERecords extends javax.swing.JFrame {
             
             dtm.setColumnCount(colCount);
             
-            do { 
-                String s;
+            while( resultSet.next() ) { 
+                String s; System.out.println("&" + colCount);
                 for( int a = 1; a <= colCount/*dtm.getColumnCount()*/; a++ ) {
                     //nextRow.add( resultSet.getString(a) ); 
-                    s = resultSet.getString(a); System.out.println("#");
+                    s = resultSet.getString(a); 
+                    System.out.println("#");
                     nextRow.add(s);
                 }
 
                 dtm.addRow( nextRow.toArray() );
                 nextRow.clear();
-            } while( resultSet.next() );
+            } 
 
             jTable1.setModel( dtm );
             DefaultTableColumnModel dtcm = (DefaultTableColumnModel) jTable1.getColumnModel();
@@ -177,7 +178,9 @@ public class ViewRIERecords extends javax.swing.JFrame {
                 dtcm.getColumn(a).setHeaderValue( resultSet.getMetaData().getColumnName(a+1) );
             }
         }
-        catch( SQLException exp ){}
+        catch( SQLException exp ){
+            System.out.println(exp);
+        }
     }
   
 
