@@ -127,7 +127,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
         };
 
 
-        updateTable( cont.getResultSet( queries[index] ) );
+        //updateTable( cont.getResultSet( queries[index] ) );
 
         if( index == 4 ) checkForDiscrepancies();
 
@@ -158,9 +158,13 @@ public class ViewRIERecords extends javax.swing.JFrame {
             
             dtm.setColumnCount(colCount);
             
-            do {
-                for( int a = 1; a <= colCount/*dtm.getColumnCount()*/; a++ )
-                    nextRow.add( resultSet.getString(a) );
+            do { 
+                String s;
+                for( int a = 1; a <= colCount/*dtm.getColumnCount()*/; a++ ) {
+                    //nextRow.add( resultSet.getString(a) ); 
+                    s = resultSet.getString(a); System.out.println("#");
+                    nextRow.add(s);
+                }
 
                 dtm.addRow( nextRow.toArray() );
                 nextRow.clear();
