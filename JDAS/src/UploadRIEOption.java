@@ -76,8 +76,8 @@ public class UploadRIEOption extends javax.swing.JFrame {
         
         if(returnVal == JFileChooser.APPROVE_OPTION) {
             File f = fc.getSelectedFile().getAbsoluteFile();
-        
-            controller.mergeAndUpdateRIERecords(f);
+        //TODO do something
+            //controller.mergeAndUpdateRIERecords(f);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

@@ -91,7 +91,7 @@ public class Model {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+ /*  
     public boolean mergeAndUpdateRIERecords(ArrayList<ArrayList<String>> list) {
         try {
             Statement stmt = conn.createStatement();
@@ -125,7 +125,7 @@ public class Model {
         
         
         
-    }
+    }*/
     
     public ResultSet getResultSet(String s) {
         try {
@@ -137,6 +137,35 @@ public class Model {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null; // TODO look at this later
+    }
+
+    public ResultSet hasConflict(String tblname, ArrayList<String> list) throws SQLException {
+        Statement stmt=conn.createStatement();
+        if(tblname.equals("records")){        
+            ResultSet rs =stmt.executeQuery("SELECT id, category, title, desc1, "
+                    + "desc2, award, year, score, userid FROM " +tblname+
+                    " WHERE id = "+list.get(0));
+            boolean flag=false;
+            for(int i=6;i<=13;i++){
+                if(!rs.getString(i).equals(list.get(i-1)))flag=true;
+            }
+            if(flag)return rs;
+            
+        }
+        else if(tblname.equals("publication")){
+            ResultSet rs =stmt.executeQuery("SELECT title, desc1, year FROM "+tblname
+            +" WHERE title=\""+list.get(0)+"\"");
+            boolean flag=false;
+            for(int i=1;i<=3;i++){
+                if(!rs.getString(i).equals(list.get(i-1)))flag=true;
+            }
+            if(flag)return rs;
+        }
+        return null;
+    }
+
+    void addRecord(String tblname, ArrayList<String> list) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
