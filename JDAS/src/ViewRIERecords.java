@@ -157,7 +157,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void checkForDiscrepancies(){
-
+        //TODO to be implemented
     }
 
     private void updateTable( ResultSet resultSet ){
