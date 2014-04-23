@@ -145,7 +145,7 @@ public class Model {
             ResultSet rs =stmt.executeQuery("SELECT id, category, title, desc1, "
                     + "desc2, award, year, score, userid FROM " +tblname+
                     " WHERE id = "+list.get(0));
-            if(!rs.isFirst())return null;
+            if(!rs.isBeforeFirst())return null;
             boolean flag=false;
             for(int i=6;i<=13;i++){
                 if(!rs.getString(i).equals(list.get(i-1)))flag=true;
@@ -157,21 +157,24 @@ public class Model {
             ResultSet rs =stmt.executeQuery("SELECT title, desc1, year FROM "+tblname
             +" WHERE title=\""+list.get(0)+"\"");
             System.out.println(list.get(0));
-            if(!rs.isFirst())return null;
+            if(!rs.isBeforeFirst())return null;
             boolean flag=false;
+            rs.next();
             for(int i=1;i<=3;i++){
                 if(!rs.getString(i).equals(list.get(i-1)))flag=true;
             }
-            if(flag)return rs;
+            if(flag)    return rs;
         }
         return null;
     }
 
     public void addRecord(String tblname, ArrayList<String> list) throws SQLException {
+        Statement stmt=conn.createStatement();
         if(tblname.equals("records")){
             
         }
         else if(tblname.equals("publication")){
+            stmt.executeUpdate("DELETE FROM publication where title=\""+list.get(0)+"\"");
             String addQuery ="INSERT INTO publication() VALUES(?,?,?)";
             PreparedStatement ps = conn.prepareStatement(addQuery);
             int count =1;

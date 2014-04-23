@@ -1,3 +1,0 @@
-"1","Testing","CSV,files with commas, and space inside","2010"
-"2","again, and again","in order to, ensure that this thing really, really works","2014"
-"3","while","putting integers, in the range of 2010-2014 in the last column!","2012"
