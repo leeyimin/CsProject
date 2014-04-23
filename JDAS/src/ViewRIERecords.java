@@ -29,7 +29,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
         
         this.cont = cont;
 
-        ResultSet rs = cont.getResultSet("select * from records;"); //TODO correct?
+        ResultSet rs = cont.getResultSet("select * from records;"); 
         ResultSetMetaData rsmd = rs.getMetaData();
         int columnCount = rsmd.getColumnCount();
 
@@ -168,16 +168,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
         }
         catch( SQLException exp ){}
     }
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                //new ViewRIERecords().setVisible(true);
-            }
-        });
-    }
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox jComboBox1;
