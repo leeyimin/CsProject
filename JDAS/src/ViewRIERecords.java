@@ -135,7 +135,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
         // TODO add your handling code here:
         int index = jComboBox1.getSelectedIndex();
         String[] queries = new String[]{
-            "SELECT * FROM RECORDS", 
+            "SELECT * FROM RECORDS;", 
             "SELECT USERID, DESC1, YEAR FROM RECORDS WHERE CATEGORY = 14;",
             "SELECT USERID, DESC1, YEAR FROM RECORDS WHERE CATEGORY = 15;",
             "SELECT USERID, DESC1, AWARD, YEAR FROM RECORDS WHERE CATEGORY = 16;",
