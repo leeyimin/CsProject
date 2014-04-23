@@ -125,22 +125,20 @@ public class ViewRIERecords extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
         int index = jComboBox1.getSelectedIndex();
         String[] queries = new String[]{
             "SELECT * FROM RECORDS;", 
-            "SELECT USERID, DESC1, YEAR FROM RECORDS WHERE CATEGORY = 14;",
-            "SELECT USERID, DESC1, YEAR FROM RECORDS WHERE CATEGORY = 15;",
-            "SELECT USERID, DESC1, AWARD, YEAR FROM RECORDS WHERE CATEGORY = 16;",
-            "SELECT USERID, DESC1, YEAR FROM RECORDS WHERE CATEGORY = 17;",
-            "SELECT USERID, TITLE, DES1, YEAR FROM RECORDS WHERE CATEGORY = 18 OR CATEGORY = 19;",
-            "SELECT USERID, DESC1, YEAR FROM RECORDS WHERE CATEGORY = 20;"
+            "SELECT ID, USERID, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 14;",
+            "SELECT ID, USERID, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 15;",
+            "SELECT ID, USERID, DESC1, AWARD, YEAR FROM RIERECORDS WHERE CATEGORY = 16;",
+            "SELECT ID, USERID, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 17;",
+            "SELECT ID, USERID, TITLE, DES1, YEAR FROM RIERECORDS WHERE CATEGORY = 18 OR CATEGORY = 19;",
+            "SELECT ID, USERID, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 20;"
         };
-
 
         updateTable( cont.getResultSet( queries[index] ) );
 
-        if( index == 4 ) checkForDiscrepancies();
+        if( index == 5 ) checkForDiscrepancies();
 
         try{
             updateTable( cont.getResultSet( queries[index] ) );
@@ -149,7 +147,67 @@ public class ViewRIERecords extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    private void checkForDiscrepancies(){
+    public void checkForDiscrepancies(){
+        int id = -1, title = -1, desc = -1;
+        int column = jTable1.getColumnCount(), row = jTable1.getRowCount();
+        for( int a = 0; a < column; a++ ){
+            if( jTable1.getColumnName(a).equals( "title" ) )
+                title = a;
+            if( jTable1.getColumnName(a).equals( "id" ) )
+                id = a;
+            if( jTable1.getColumnName(a).equals( "desc1" ) )
+                desc = a;
+        }
+
+        if( title == -1 || id == -1 || desc == -1 ) return;
+        //Perhaps an exception
+
+        ArrayList< String[] > records = new ArrayList< String[] >();
+        String[] nextRecord = new String[3];
+
+        for( int a = 0; a < row; a++ ){
+            nextRecord[0] = (String) jTable1.getModel().getValueAt( a, id );
+            nextRecord[1] = (String) jTable1.getModel().getValueAt( a, title );
+            nextRecord[2] = (String) jTable1.getModel().getValueAt( a, desc );
+            records.add( nextRecord );
+        }
+
+        Collections.sort( records, new Comparator<String[]>(){
+            public int compare( String[] a, String[] b ){
+                return a[1].compareTo( b[1] );
+            }
+        });
+
+        int reference, end;
+        boolean disc;
+        ArrayList<Integer> toColour = new ArrayList<Integer>();
+        for( int a = 0; a < row; a++ ){
+            reference = a;
+            disc = false;
+
+            for( end = a+1; end < row && records.get( reference )[1].equals( records.get( end )[1] ); end++ ){
+                if( disc ) continue;
+                if( !records.get( reference )[2].equals( records.get( end )[2] ) )
+                    disc = true;
+            }
+
+            if( disc ){
+                for( int i = reference; i < end; i++ )
+                    toColour.add( Integer.parseInt( records.get(i)[0] ) );
+            }
+
+            a = end;
+        }
+
+        Collections.sort( toColour );
+
+        Integer rowID;
+        for( int a = 0; a < row; a++ ){
+            rowID = Integer.parseInt( (String) jTable1.getModel().getValueAt( a, id ) );
+            if( rowID == toColour.get( Arrays.binarySearch( toColour.toArray(), rowID ) ) )
+                
+        }
+
         //TODO to be implemented
     }
 
@@ -158,7 +216,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
             DefaultTableModel dtm = new DefaultTableModel(){
                 @Override
                 public boolean isCellEditable( int row, int column ){
-                    return false;
+                    return true;
                 }
             };
 
