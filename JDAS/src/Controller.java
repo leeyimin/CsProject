@@ -45,13 +45,13 @@ public class Controller extends Observable{
     */
     public ArrayList<ArrayList<String> > parseCSV (File cFile) throws FileNotFoundException{
         //this assumes that every field is surrounded by " and separated by ,
-        ArrayList<ArrayList<String> > res = new ArrayList<>();
+        ArrayList< ArrayList<String> > res = new ArrayList< ArrayList<String> >();
         Scanner sc= new Scanner(cFile);
         StringTokenizer st;
         ArrayList<String> list;
         while(sc.hasNextLine()){
             st=new StringTokenizer(sc.nextLine(),"\"");
-            list= new ArrayList<>();
+            list = new ArrayList<String>();
             while(st.hasMoreTokens()){
                 String str =st.nextToken();
                 if(str.equals(",")) continue;
