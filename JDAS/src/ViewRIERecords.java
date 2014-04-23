@@ -123,15 +123,13 @@ public class ViewRIERecords extends javax.swing.JFrame {
             "SELECT ID, USERID, TITLE, DES1, YEAR FROM RIERECORDS WHERE CATEGORY = 18 OR CATEGORY = 19;",
             "SELECT ID, USERID, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 20;"
         };
+        //ID is also taken just to make things easier for discrepancy checks.
+        //I'm not going to use the ResultSet, and stick with only the Table's content.
+        //TODO Change the Integer values to Strings
 
         updateTable( cont.getResultSet( queries[index] ) );
 
         if( index == 5 ) checkForDiscrepancies();
-
-        try{
-            updateTable( cont.getResultSet( queries[index] ) );
-        }
-        catch( Exception exp ){}
 
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
