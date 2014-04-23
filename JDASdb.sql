@@ -3,28 +3,13 @@ create database JDASdb;
 use JDASdb
 
 CREATE TABLE publication(
-title varchar(100) not null,
-descript varchar(500),
+title varchar(500) not null,
+desc1 varchar(500),
 year integer,
 primary key(title)
 );
 
-/*CREATE TABLE records(
-	asset_id integer,
-	award varchar(20),
-	category varchar(100) not null,
-	/*checked_out_time ,
-	created_by ,
-	desc1 varchar(500),
-	desc2 varchar(500),
-	id integer not null,	
-	score varchar(20),
-	/*state ,
-	title varchar(100),
-	/*userid ,
-	year integer,
-	primary key(id)
-);*/
+
 
 CREATE TABLE records (
   id int(11) unsigned NOT NULL,
@@ -41,5 +26,5 @@ CREATE TABLE records (
   score varchar(255),
   userid varchar(255) NOT NULL,
   PRIMARY KEY (id)
-) /*ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24*/ ;
+);
 

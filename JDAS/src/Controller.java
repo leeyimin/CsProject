@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -70,7 +71,7 @@ public class Controller extends Observable{
         for(ArrayList<String> list: addList){
             ResultSet rs = m.hasConflict(tblname, list);
             if(rs!=null){
-                
+                int n =JOptionPane.showConfirmDialog(null, tblname, tblname, optionType)
             }//show dialog for user to choose
             m.addRecord(tblname,list);
         }
