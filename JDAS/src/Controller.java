@@ -70,12 +70,28 @@ public class Controller extends Observable{
         ArrayList<ArrayList<String> > addList = parseCSV(file);
         for(ArrayList<String> list: addList){
             ResultSet rs = m.hasConflict(tblname, list);
+            System.out.println(list.get(0));
+            System.out.println(tblname);
             if(rs!=null){
-                int n =JOptionPane.showConfirmDialog(null, tblname, tblname, optionType)
+                String nstr="";
+                for(String s:list) nstr+="\""+s+"\",";
+                nstr=nstr.substring(0, nstr.length()-2);
+                String ostr ="";
+                for(int i=1;i<=rs.getMetaData().getColumnCount();i++)
+                    ostr+="\""+rs.getString(i)+"\"";
+                ostr=ostr.substring(0, ostr.length()-2);
+                int n =JOptionPane.showConfirmDialog(null, "Do you want to replace\n"+ostr
+                        +"\nwith\n"+nstr, "Overwrite current record?", JOptionPane.YES_NO_OPTION);
+                if(n==JOptionPane.YES_OPTION)   m.addRecord(tblname,list);
             }//show dialog for user to choose
-            m.addRecord(tblname,list);
+            else{
+                System.out.println("GOSH");
+                m.addRecord(tblname,list);
+            }
+            
         }
         //show dialog for successful update?
+        JOptionPane.showMessageDialog(null, "The records have been updated.");
     }
     
     public ResultSet getResultSet(String s) {

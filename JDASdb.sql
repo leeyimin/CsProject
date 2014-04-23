@@ -3,7 +3,7 @@ create database JDASdb;
 use JDASdb
 
 CREATE TABLE publication(
-title varchar(500) not null,
+title varchar(100) not null,
 desc1 varchar(500),
 year integer,
 primary key(title)
