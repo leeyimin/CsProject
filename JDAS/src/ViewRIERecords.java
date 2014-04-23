@@ -29,7 +29,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
     ArrayList<String> categories;
     /** Creates new form ViewRIERecords */
     public ViewRIERecords( Controller cont ) throws SQLException {
-        //try {
+        
         this.cont = cont;
 
         ResultSet rs = cont.getResultSet("select * from records"); //TODO correct?
@@ -46,10 +46,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
         updateTable(rs);
 
         initComponents();
-            
-        //} catch (SQLException ex) {
-            
-        //}
+    
     }
 
     /** This method is called from within the constructor to
