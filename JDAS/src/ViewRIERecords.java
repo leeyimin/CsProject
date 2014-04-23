@@ -41,10 +41,12 @@ public class ViewRIERecords extends javax.swing.JFrame {
         }
  
         
-        rs = cont.getResultSet("select * from records;"); 
-        updateTable(rs);
+        
 
         initComponents();
+        
+        rs = cont.getResultSet("select * from records;"); 
+        updateTable(rs);
     
     }
 
@@ -159,11 +161,11 @@ public class ViewRIERecords extends javax.swing.JFrame {
             dtm.setColumnCount(colCount);
             
             while( resultSet.next() ) { 
-                String s; System.out.println("&" + colCount);
+                String s;// System.out.println("&" + colCount);
                 for( int a = 1; a <= colCount/*dtm.getColumnCount()*/; a++ ) {
                     //nextRow.add( resultSet.getString(a) ); 
                     s = resultSet.getString(a); 
-                    System.out.println("#");
+                    //System.out.println("#");
                     nextRow.add(s);
                 }
 
