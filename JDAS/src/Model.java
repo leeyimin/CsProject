@@ -147,6 +147,7 @@ public class Model {
                     " WHERE id = "+list.get(0));
             if(!rs.isBeforeFirst())return null;
             boolean flag=false;
+            rs.next();
             for(int i=6;i<=13;i++){
                 if(!rs.getString(i).equals(list.get(i-1)))flag=true;
             }
