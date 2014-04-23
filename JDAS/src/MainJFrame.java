@@ -1,6 +1,7 @@
 
 
 import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.*;
 import javax.swing.*;
@@ -100,7 +101,12 @@ public class MainJFrame extends javax.swing.JFrame implements Observer{
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("View & Edit..."));
 
-        jButton4.setText("Edit/Delete RIE Records");
+        jButton4.setLabel("View/Edit/Delete RIE Records");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("View Student Records");
 
@@ -189,6 +195,21 @@ public class MainJFrame extends javax.swing.JFrame implements Observer{
 //        }
         
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        ViewRIERecords v;
+        try {
+            v = new ViewRIERecords(co);
+            v.setLocationRelativeTo(this);
+            v.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewRIERecords.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Eggs are not supposed to be green.");
+            System.out.println("AAAAAAAAAAAA");
+        }
+        
+        //u.setAlwaysOnTop(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
         
     /**

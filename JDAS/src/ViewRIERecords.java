@@ -12,6 +12,12 @@
 import java.sql.*;
 import javax.swing.table.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,10 +26,30 @@ import java.util.*;
 public class ViewRIERecords extends javax.swing.JFrame {
 
     Controller cont;
+    ArrayList<String> categories;
     /** Creates new form ViewRIERecords */
-    public ViewRIERecords( Controller cont ) {
-        initComponents();
+    public ViewRIERecords( Controller cont ) throws SQLException {
+        //try {
         this.cont = cont;
+
+        ResultSet rs = cont.getResultSet("select * from records"); //TODO correct?
+        ResultSetMetaData rsmd = rs.getMetaData();
+        int columnCount = rsmd.getColumnCount();
+
+        categories = new ArrayList<String>(columnCount+1);
+        categories.add("All");
+        // The column count starts from 1
+        for (int i = 1; i < columnCount + 1; i++ ) {
+            categories.add(rsmd.getColumnName(i));   
+        } //used to initiate combo box
+
+        updateTable(rs);
+
+        initComponents();
+            
+        //} catch (SQLException ex) {
+            
+        //}
     }
 
     /** This method is called from within the constructor to
@@ -40,11 +66,11 @@ public class ViewRIERecords extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Category:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select a Category...", "Publications", "International Scientific Conferences", "Research Awards", "Science Fairs and Forums", "Details of ARP/ORP", "Other Research Activities" }));
+        jComboBox1.setModel(new DefaultComboBoxModel(categories.toArray()));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -67,13 +93,13 @@ public class ViewRIERecords extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, 0, 321, Short.MAX_VALUE)))
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jComboBox1, 0, 492, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -82,9 +108,8 @@ public class ViewRIERecords extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -94,6 +119,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
         // TODO add your handling code here:
         int index = jComboBox1.getSelectedIndex();
         String[] queries = new String[]{
+            "SELECT * FROM RECORDS", 
             "SELECT USERID, DESC1, YEAR FROM RECORDS WHERE CATEGORY = 14;",
             "SELECT USERID, DESC1, YEAR FROM RECORDS WHERE CATEGORY = 15;",
             "SELECT USERID, DESC1, AWARD, YEAR FROM RECORDS WHERE CATEGORY = 16;",
@@ -105,7 +131,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
         try{
             updateTable( cont.getResultSet( queries[index] ) );
         }
-        catch( SQLException exp ){}
+        catch( Exception exp ){}
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void updateTable( ResultSet resultSet ){
@@ -142,7 +168,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViewRIERecords().setVisible(true);
+                //new ViewRIERecords().setVisible(true);
             }
         });
     }
