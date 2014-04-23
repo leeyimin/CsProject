@@ -29,17 +29,19 @@ public class ViewRIERecords extends javax.swing.JFrame {
         
         this.cont = cont;
 
-        ResultSet rs = cont.getResultSet("select * from records;"); 
+        ResultSet rs = cont.getResultSet("select distinct category from records;"); 
         ResultSetMetaData rsmd = rs.getMetaData();
-        int columnCount = rsmd.getColumnCount();
-
-        categories = new ArrayList<String>(columnCount+1);
+        int catCount = 0;
+        
+        categories = new ArrayList<String>(catCount+1);
         categories.add("All");
-        // The column count starts from 1
-        for (int i = 1; i < columnCount + 1; i++ ) {
-            categories.add(rsmd.getColumnName(i));   
-        } //used to initiate combo box
-
+        
+        while (rs.next()) {
+            categories.add(rs.getString(1));
+        }
+ 
+        
+        rs = cont.getResultSet("select * from records;"); 
         updateTable(rs);
 
         initComponents();
@@ -151,13 +153,18 @@ public class ViewRIERecords extends javax.swing.JFrame {
 
             Vector<Object> nextRow = new Vector<Object>();
 
-            while( resultSet.next() ){
-                for( int a = 1; a <= dtm.getColumnCount(); a++ )
+            int colCount = resultSet.getMetaData().getColumnCount();
+            System.out.println("colCount in updateTable: " + colCount);
+            
+            dtm.setColumnCount(colCount);
+            
+            do {
+                for( int a = 1; a <= colCount/*dtm.getColumnCount()*/; a++ )
                     nextRow.add( resultSet.getString(a) );
 
                 dtm.addRow( nextRow.toArray() );
                 nextRow.clear();
-            }
+            } while( resultSet.next() );
 
             jTable1.setModel( dtm );
             DefaultTableColumnModel dtcm = (DefaultTableColumnModel) jTable1.getColumnModel();
