@@ -12,12 +12,9 @@
 import java.sql.*;
 import javax.swing.table.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ComboBoxModel;
+
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+
 
 /**
  *
@@ -32,20 +29,21 @@ public class ViewRIERecords extends javax.swing.JFrame {
         
         this.cont = cont;
 
-        ResultSet rs = cont.getResultSet("select * from records;"); //TODO correct?
+        ResultSet rs = cont.getResultSet("select distinct category from records;"); 
         ResultSetMetaData rsmd = rs.getMetaData();
-        int columnCount = rsmd.getColumnCount();
-
-        categories = new ArrayList<String>(columnCount+1);
+        int catCount = 0;
+        
+        categories = new ArrayList<String>(catCount+1);
         categories.add("All");
-        // The column count starts from 1
-        for (int i = 1; i < columnCount + 1; i++ ) {
-            categories.add(rsmd.getColumnName(i));   
-        } //used to initiate combo box
-
-        updateTable(rs);
-
+        
+        while (rs.next()) {
+            categories.add(rs.getString(1));
+        }
+ 
         initComponents();
+        
+        rs = cont.getResultSet("select * from records;"); 
+        updateTable(rs);
     
     }
 
@@ -64,7 +62,6 @@ public class ViewRIERecords extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
         setTitle("View RIE Records");
 
         jLabel1.setText("Category:");
@@ -93,32 +90,23 @@ public class ViewRIERecords extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, 0, 422, Short.MAX_VALUE)))
-
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComboBox1, 0, 492, Short.MAX_VALUE)
+                        .addComponent(jComboBox1, 0, 412, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
@@ -222,13 +210,20 @@ public class ViewRIERecords extends javax.swing.JFrame {
 
             Vector<Object> nextRow = new Vector<Object>();
 
-            while( resultSet.next() ){
-                for( int a = 1; a <= dtm.getColumnCount(); a++ )
-                    nextRow.add( resultSet.getString(a) );
+            int colCount = resultSet.getMetaData().getColumnCount();
+            
+            dtm.setColumnCount(colCount);
+            
+            while( resultSet.next() ) { 
+;
+                for( int a = 1; a <= colCount/*dtm.getColumnCount()*/; a++ ) {
+                    
+                    nextRow.add(resultSet.getString(a));
+                }
 
                 dtm.addRow( nextRow.toArray() );
                 nextRow.clear();
-            }
+            } 
 
             jTable1.setModel( dtm );
             DefaultTableColumnModel dtcm = (DefaultTableColumnModel) jTable1.getColumnModel();
@@ -237,18 +232,11 @@ public class ViewRIERecords extends javax.swing.JFrame {
                 dtcm.getColumn(a).setHeaderValue( resultSet.getMetaData().getColumnName(a+1) );
             }
         }
-        catch( SQLException exp ){}
+        catch( SQLException exp ){
+            System.out.println(exp);
+        }
     }
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                //new ViewRIERecords().setVisible(true);
-            }
-        });
-    }
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox jComboBox1;
