@@ -144,16 +144,16 @@ public class ViewRIERecords extends javax.swing.JFrame {
             "SELECT USERID, DESC1, YEAR FROM RECORDS WHERE CATEGORY = 20;"
         };
 
-<<<<<<< HEAD
+
         updateTable( cont.getResultSet( queries[index] ) );
 
         if( index == 4 ) checkForDiscrepancies();
-=======
+
         try{
             updateTable( cont.getResultSet( queries[index] ) );
         }
         catch( Exception exp ){}
->>>>>>> 1840708a6926993286c9297da018feb12166398f
+
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void checkForDiscrepancies(){
