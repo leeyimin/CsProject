@@ -40,9 +40,6 @@ public class ViewRIERecords extends javax.swing.JFrame {
             categories.add(rs.getString(1));
         }
  
-        
-        
-
         initComponents();
         
         rs = cont.getResultSet("select * from records;"); 
@@ -120,7 +117,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
         int index = jComboBox1.getSelectedIndex();
         String[] queries = new String[]{
             "SELECT * FROM RECORDS;", 
-            "SELECT USERID, DESC1, YEAR FROM RECORDS WHERE CATEGORY = 14;",
+            "SELECT USERID, DESC1, YEAR FROM RECORDS WHERE CATEGORY = 14;", //TODO fix category numbers or whatever.
             "SELECT USERID, DESC1, YEAR FROM RECORDS WHERE CATEGORY = 15;",
             "SELECT USERID, DESC1, AWARD, YEAR FROM RECORDS WHERE CATEGORY = 16;",
             "SELECT USERID, DESC1, YEAR FROM RECORDS WHERE CATEGORY = 17;",
@@ -156,17 +153,14 @@ public class ViewRIERecords extends javax.swing.JFrame {
             Vector<Object> nextRow = new Vector<Object>();
 
             int colCount = resultSet.getMetaData().getColumnCount();
-            System.out.println("colCount in updateTable: " + colCount);
             
             dtm.setColumnCount(colCount);
             
             while( resultSet.next() ) { 
-                String s;// System.out.println("&" + colCount);
+;
                 for( int a = 1; a <= colCount/*dtm.getColumnCount()*/; a++ ) {
-                    //nextRow.add( resultSet.getString(a) ); 
-                    s = resultSet.getString(a); 
-                    //System.out.println("#");
-                    nextRow.add(s);
+                    
+                    nextRow.add(resultSet.getString(a));
                 }
 
                 dtm.addRow( nextRow.toArray() );
