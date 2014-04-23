@@ -32,7 +32,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
         
         this.cont = cont;
 
-        ResultSet rs = cont.getResultSet("select * from records"); //TODO correct?
+        ResultSet rs = cont.getResultSet("select * from records;"); //TODO correct?
         ResultSetMetaData rsmd = rs.getMetaData();
         int columnCount = rsmd.getColumnCount();
 
