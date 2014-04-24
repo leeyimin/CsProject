@@ -30,7 +30,26 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
     ArrayList<String> categories;
     DefaultTableColumnModel dtcm ;
     /** Creates new form ViewRIERecords */
+    
+    Hashtable<Integer, String> allCategories = new Hashtable<Integer, String>();
+    Hashtable<String, Integer> allCategoriesRev = new Hashtable<String, Integer>();
+    
     public ViewRIERecords( Controller cont ) throws SQLException {
+        allCategories.put(19, "Other research project");
+        allCategories.put(14, "Publication");
+        allCategories.put(15, "Intl. scientific conference");
+        allCategories.put(16, "Research award");
+        allCategories.put(17, "Science fair/forum");
+        allCategories.put(18, "Advanced Research Project");
+        allCategories.put(20, "Other research activity");
+        
+        allCategoriesRev.put("Other research project", 19);
+        allCategoriesRev.put("Publication", 14);
+        allCategoriesRev.put("Intl. scientific conference", 15);
+        allCategoriesRev.put("Research award", 16);
+        allCategoriesRev.put("Science fair/forum", 17);
+        allCategoriesRev.put("Advanced Research Project", 18);
+        allCategoriesRev.put("Other research activity", 20);
         
         this.cont = cont;
         
@@ -43,7 +62,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         categories.add("All");
         
         while (rs.next()) {
-            categories.add(rs.getString(1));
+            categories.add( allCategories.get( Integer.parseInt( rs.getString(1) )) );
         }
  
         initComponents();
@@ -113,11 +132,11 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 868, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, 0, 661, Short.MAX_VALUE))
+                        .addComponent(jComboBox1, 0, 809, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -143,21 +162,10 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {                                           
         refresh();
 
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int[] selected = jTable1.getSelectedRows();
-        for (int i: selected){
-            i = Integer.parseInt((String) jTable1.getModel().getValueAt(i, 0));
-            
-            cont.deleteRecord(cont.RIE, i);
-        }
-        
-        refresh();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }                                                                          
 
     private void refresh(){
         
@@ -178,11 +186,29 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
 
         if( index == 0 )
             updateTable( cont.getResultSet( "SELECT ID, USERID, CATEGORY, TITLE, DESC1, DESC2, AWARD, YEAR, SCORE FROM RIERECORDS;" ) );
-        else
-            updateTable( cont.getResultSet( query + (String) jComboBox1.getItemAt( index ) ) );
-        if( ( (String) jComboBox1.getItemAt( index ) ).equals( "18" ) ) checkForDiscrepancies();
-    }
-    
+        else{
+            int c = allCategoriesRev.get((String) jComboBox1.getItemAt(index));
+            updateTable( cont.getResultSet( query + c ) );
+            if( c == 18 ) checkForDiscrepancies();
+        }
+        
+
+    }                                          
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        System.out.println( jTable1.getColumnModel().getColumn(1).getHeaderValue() );
+        int[] selected = jTable1.getSelectedRows();
+        for ( int k = selected.length - 1; k >= 0; k-- ) {
+            int i = selected[k];
+            i = Integer.parseInt((String) jTable1.getModel().getValueAt(i, 0));
+            
+            cont.deleteRecord(cont.RIE, i);
+        }
+        
+        //update table
+        jComboBox1ActionPerformed(null);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -192,31 +218,28 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         int id = -1, title = -1, desc = -1;
         int column = jTable1.getColumnCount(), row = jTable1.getRowCount();
         for( int a = 0; a < column; a++ ){
-            System.out.println( "Column Name = " + jTable1.getColumnName(a) );
-            if( jTable1.getColumnName(a).equals( "title" ) )
+            if( jTable1.getColumnModel().getColumn(a).getHeaderValue().equals( "title" ) )
                 title = a;
-            if( jTable1.getColumnName(a).equals( "id" ) )
+            if( jTable1.getColumnModel().getColumn(a).getHeaderValue().equals( "id" ) )
                 id = a;
-            if( jTable1.getColumnName(a).equals( "desc1" ) )
+            if( jTable1.getColumnModel().getColumn(a).getHeaderValue().equals( "desc1" ) )
                 desc = a;
         }
-
-        System.out.println( "title = " + title );
-        System.out.println( "   id = " + id );
-        System.out.println( "desc1 = " + desc );
         
         if( title == -1 || id == -1 || desc == -1 ) return;
         //Perhaps an exception
 
         ArrayList< String[] > records = new ArrayList< String[] >();
         String[] nextRecord = new String[4];
-
+        
         for( int a = 0; a < row; a++ ){
             nextRecord[0] = (String) jTable1.getModel().getValueAt( a, id );
             nextRecord[1] = (String) jTable1.getModel().getValueAt( a, title );
             nextRecord[2] = (String) jTable1.getModel().getValueAt( a, desc );
             nextRecord[3] = Integer.toString( a );
-            records.add( nextRecord );
+            
+            String[] toAdd = nextRecord.clone();
+            records.add( toAdd );
         }
 
         Collections.sort( records, new Comparator<String[]>(){
@@ -224,7 +247,6 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
                 return a[1].compareTo( b[1] );
             }
         });
-
 
         ArrayList<Integer> toColour = new ArrayList<Integer>();
         int reference, end;
@@ -244,7 +266,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
                     toColour.add( Integer.parseInt( records.get(i)[3] ) );
             }
 
-            a = end;
+            a = end-1;
         }
 
         Collections.sort( toColour );
@@ -268,12 +290,18 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
             Vector<Object> nextRow = new Vector<Object>();
 
             int colCount = resultSet.getMetaData().getColumnCount();
+            int selectedOption = jComboBox1.getSelectedIndex();
             
             dtm.setColumnCount(colCount);
             
             while( resultSet.next() ) { 
                 for( int a = 1; a <= colCount; a++ ) {
-                    nextRow.add(resultSet.getString(a));
+                    if (selectedOption == 0 && a == 3) {
+                        //change category to String representation
+                        nextRow.add(allCategories.get( (Integer) resultSet.getObject(a) ));
+                        System.out.println(allCategories.get( (Integer) resultSet.getObject(a) ));
+                    }
+                    else nextRow.add(resultSet.getString(a));
                 }
 
                 dtm.addRow( nextRow.toArray() );
@@ -335,17 +363,25 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
             Component c = super.getTableCellRendererComponent( table, value, isSelected, hasFocus, row, col );
 
             if( Arrays.binarySearch( discrepancies.toArray(), row ) >= 0 ){
-                if( isSelected )
+                if( isSelected ){
                     c.setBackground( Color.RED );
-                else
-                    c.setBackground( Color.YELLOW );
+                }
+                else{
+                    if( row%2 == 0 )
+                        c.setBackground( Color.YELLOW );
+                    else
+                        c.setBackground( new Color( 255, 255, 130 ) );
+                }
             }
             else{
                 if( isSelected )
-                    c.setBackground( new Color( 0, 0, 50 ) );
-                else
-                    c.setBackground( table.getBackground() );
-
+                    c.setBackground( new Color( 57, 105, 138 ) );
+                else{
+                    if( row%2 == 0 )
+                        c.setBackground( Color.WHITE );
+                    else
+                        c.setBackground( new Color( 242, 242, 242 ) );
+                }
             }
                 
             return c;
