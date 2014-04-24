@@ -81,7 +81,11 @@ public class Model {
             String url = "jdbc:mysql://localhost:3306/";
             String dbName = "JDASdb";
             String userName = "root";
+<<<<<<< HEAD
             String password ="65644157";
+=======
+            String password = "";//"Monster Hunter 3 Ultimate";
+>>>>>>> 6e6e35ad6e03bee655dfa53b1843bcba6a1d3477
             
             //Create a connect object (via getConnection)
             conn = DriverManager.getConnection(url+dbName,userName,password);
@@ -173,7 +177,11 @@ public class Model {
         Statement stmt = conn.createStatement();
         
         if(tblname.equals("rierecords")){
+<<<<<<< HEAD
             stmt.executeUpdate("DELETE FROM "+tblname+" WHERE id="+list.get(0));
+=======
+            stmt.executeQuery("DELETE FROM "+tblname+" WHERE id="+list.get(0));
+>>>>>>> 6e6e35ad6e03bee655dfa53b1843bcba6a1d3477
             String addQuery ="INSERT INTO "+tblname+"() VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(addQuery);
             int count =1;
@@ -202,6 +210,18 @@ public class Model {
         try {
             Statement stmt = conn.createStatement();
             String updateString = "UPDATE " + tableName + " SET " + colName + " = \'" + newValue + "\' WHERE ID = " + id + ";";
+            System.out.println(updateString);
+            
+            stmt.executeUpdate(updateString);
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    void deleteRecord(String tableName, int id) {
+        try {
+            Statement stmt = conn.createStatement();
+            String updateString = "DELETE FROM " + tableName + " WHERE ID = " + id + ";";
             System.out.println(updateString);
             
             stmt.executeUpdate(updateString);

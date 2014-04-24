@@ -66,6 +66,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         jComboBox1 = new javax.swing.JComboBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("View RIE Records");
@@ -89,18 +90,28 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        jButton1.setText("Delete selected entries");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, 0, 412, Short.MAX_VALUE)))
+                        .addComponent(jComboBox1, 0, 661, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -111,8 +122,10 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -142,6 +155,18 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         if( index == 5 ) checkForDiscrepancies();
 
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int[] selected = jTable1.getSelectedRows();
+        for (int i: selected){
+            i = Integer.parseInt((String) jTable1.getModel().getValueAt(i, 0));
+            
+            cont.deleteRecord(cont.RIE, i);
+        }
+        
+        //update table
+        jComboBox1ActionPerformed(null);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public void checkForDiscrepancies(){
         int id = -1, title = -1, desc = -1;
@@ -200,7 +225,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         Collections.sort( toColour );
         ( (CellColourer) jTable1.getDefaultRenderer( Object.class ) ).setDiscrepancies( toColour );
         jTable1.repaint();
-        //TODO to be implemented
+       
     }
 
     private void updateTable( ResultSet resultSet ){
@@ -245,6 +270,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -284,7 +310,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         System.out.println("Table changed.");
         
         int row = e.getFirstRow();
-        int col = e.getColumn();
+        int col = e.getColumn(); //TODO fix year bug
         
         //String colName = jTable1.getModel().getColumnName(col);
         String colName = (String) dtcm.getColumn(col).getHeaderValue(); 
