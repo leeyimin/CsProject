@@ -81,7 +81,7 @@ public class Model {
             String url = "jdbc:mysql://localhost:3306/";
             String dbName = "JDASdb";
             String userName = "root";
-            String password ="";// "65644157";
+            String password ="65644157";
             
             //Create a connect object (via getConnection)
             conn = DriverManager.getConnection(url+dbName,userName,password);
@@ -141,11 +141,13 @@ public class Model {
 
     public ResultSet hasConflict(String tblname, ArrayList<String> list) throws SQLException {
         Statement stmt=conn.createStatement();
-        if(tblname.equals("records")){
+        if(tblname.equals("rierecords")){
             ResultSet rs =stmt.executeQuery("SELECT * FROM " +tblname+
                     " WHERE id = "+list.get(0));
+            System.out.println("HEREHERE");
             if(!rs.isBeforeFirst())return null;
             boolean flag=false;
+            rs.next();
             for(int i=6;i<=13;i++){
                 if(!rs.getString(i).equals(list.get(i-1)))flag=true;
             }
@@ -158,6 +160,7 @@ public class Model {
             
             if(!rs.isBeforeFirst())return null;
             boolean flag=false;
+            rs.next();
             for(int i=1;i<=3;i++){
                 if(!rs.getString(i).equals(list.get(i-1)))flag=true;
             }
@@ -169,8 +172,8 @@ public class Model {
     public void addRecord(String tblname, ArrayList<String> list) throws SQLException {
         Statement stmt = conn.createStatement();
         
-        if(tblname.equals("records")){
-            stmt.executeQuery("DELETE FROM "+tblname+" WHERE id="+list.get(0));
+        if(tblname.equals("rierecords")){
+            stmt.executeUpdate("DELETE FROM "+tblname+" WHERE id="+list.get(0));
             String addQuery ="INSERT INTO "+tblname+"() VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(addQuery);
             int count =1;
@@ -181,12 +184,13 @@ public class Model {
             ps.executeUpdate();
         }
         else if(tblname.equals("publication")){
-            stmt.executeQuery("DELETE FROM "+tblname+" WHERE title=\""+list.get(0)+"\"");
+            stmt.executeUpdate("DELETE FROM "+tblname+" WHERE title=\""+list.get(0)+"\"");
             String addQuery ="INSERT INTO publication() VALUES(?,?,?)";
             PreparedStatement ps = conn.prepareStatement(addQuery);
             int count =1;
             for(String str:list){
                 ps.setString(count, str);
+                
                 count++;
             }
             ps.executeUpdate();

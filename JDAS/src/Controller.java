@@ -51,19 +51,43 @@ public class Controller extends Observable {
         ArrayList< ArrayList<String> > res = new ArrayList< ArrayList<String> >();
         Scanner sc= new Scanner(cFile);
         StringTokenizer st;
+        boolean open = false, pComm=false;
+        int prev=0;
         ArrayList<String> list;
         while(sc.hasNextLine()){
-            st=new StringTokenizer(sc.nextLine(),"\"");
-            list = new ArrayList<String>();
-            while(st.hasMoreTokens()){
-                String str =st.nextToken();
-                if(str.equals(",")) continue;
-                list.add(str);
+            String line=sc.nextLine();
+            list=new ArrayList<String>();
+            for(int i=0;i<line.length();i++){
+                if(open){
+                    pComm=false;
+                    switch (line.charAt(i)){
+                        case '\"':{
+                            open=false;
+                            list.add(line.substring(prev,i));
+                            break;
+                        }
+                    }
+                            
+                }
+                else{
+                    switch (line.charAt(i)){
+                        case '\"':{
+                            pComm=false;
+                            open=true;
+                            prev=i+1;
+                            break;
+                        }
+                        case ',':{
+                            if(pComm)list.add("");
+                            pComm=true;
+                            break;
+                        }
+                    }
+                }
             }
-            //System.out.println("l: "+list.size());
             res.add(list);
+            System.out.println("HERE");
         }
-        //System.out.println("r: "+res.size());
         
         return res;
     }//to be improved
@@ -76,11 +100,11 @@ public class Controller extends Observable {
             if(rs!=null){
                 String nstr="";
                 for(String s:list) nstr+="\""+s+"\",";
-                nstr=nstr.substring(0, nstr.length()-2);
+                nstr=nstr.substring(0, nstr.length()-1);
                 String ostr ="";
                 for(int i=1;i<=rs.getMetaData().getColumnCount();i++)
-                    ostr+="\""+rs.getString(i)+"\"";
-                ostr=ostr.substring(0, ostr.length()-2);
+                    ostr+="\""+rs.getString(i)+"\",";
+                ostr=ostr.substring(0, ostr.length()-1);
                 int n =JOptionPane.showConfirmDialog(null, "Do you want to replace\n"+ostr
                         +"\nwith\n"+nstr, "Overwrite current record?", JOptionPane.YES_NO_OPTION);
                 if(n==JOptionPane.YES_OPTION)   m.addRecord(tblname,list);

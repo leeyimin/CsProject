@@ -1,5 +1,7 @@
 
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -75,7 +77,12 @@ public class UploadRIEOption extends javax.swing.JFrame {
         int returnVal = fc.showOpenDialog(this);
         
         if(returnVal == JFileChooser.APPROVE_OPTION) {
-            File f = fc.getSelectedFile().getAbsoluteFile();
+            try {
+                controller.mergeAndUpdate("rierecords", fc.getSelectedFile());
+                System.out.println("upload");
+            } catch (Exception ex) {
+                Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         //TODO do something
             //controller.mergeAndUpdateRIERecords(f);
         }
