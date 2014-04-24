@@ -29,7 +29,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
         
         this.cont = cont;
 
-        ResultSet rs = cont.getResultSet("select distinct category from records;"); 
+        ResultSet rs = cont.getResultSet("select distinct category from rierecords;"); 
         ResultSetMetaData rsmd = rs.getMetaData();
         int catCount = 0;
         
@@ -42,7 +42,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
  
         initComponents();
         
-        rs = cont.getResultSet("select * from records;"); 
+        rs = cont.getResultSet("select * from rierecords;"); 
         updateTable(rs);
     
     }
@@ -115,7 +115,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         int index = jComboBox1.getSelectedIndex();
         String[] queries = new String[]{
-            "SELECT * FROM RECORDS;", 
+            "SELECT * FROM RIERECORDS;", 
             "SELECT ID, USERID, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 14;",
             "SELECT ID, USERID, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 15;",
             "SELECT ID, USERID, DESC1, AWARD, YEAR FROM RIERECORDS WHERE CATEGORY = 16;",
@@ -191,10 +191,10 @@ public class ViewRIERecords extends javax.swing.JFrame {
         for( int a = 0; a < row; a++ ){
             rowID = Integer.parseInt( (String) jTable1.getModel().getValueAt( a, id ) );
             if( rowID == toColour.get( Arrays.binarySearch( toColour.toArray(), rowID ) ) )
-                
+                ; //TODO to be implemented
         }
 
-        //TODO to be implemented
+       
     }
 
     private void updateTable( ResultSet resultSet ){
@@ -202,7 +202,8 @@ public class ViewRIERecords extends javax.swing.JFrame {
             DefaultTableModel dtm = new DefaultTableModel(){
                 @Override
                 public boolean isCellEditable( int row, int column ){
-                    return true;
+                    if (column == 1) return true;
+                    else return false;
                 }
             };
 
