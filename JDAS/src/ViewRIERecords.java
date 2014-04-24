@@ -45,7 +45,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         }
  
         initComponents();
-        //jTable1.setDefaultRenderer( Object.class, new CellColourer() );
+        jTable1.setDefaultRenderer( Object.class, new CellColourer() );
         
         rs = cont.getResultSet("select id, userid, category, title, desc1, desc2, award, year, score from rierecords;"); 
         updateTable(rs);
@@ -152,17 +152,16 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
             "SELECT ID, USERID, TITLE, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 18 OR CATEGORY = 19;",
             "SELECT ID, USERID, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 20;"
         };
-        String query = "SELECT ID, USERID, TITLE, DESC1, DESC2, AWARD, YEAR, SCORE FROM RIERECORDS WHERE ";
+        String query = "SELECT ID, USERID, TITLE, DESC1, DESC2, AWARD, YEAR, SCORE FROM RIERECORDS WHERE CATEGORY = ";
         //ID is also taken just to make things easier for discrepancy checks.
         //I'm not going to use the ResultSet, and stick with only the Table's content.
         //TODO Change the Integer values to Strings
-/*
+
         if( index == 0 )
             updateTable( cont.getResultSet( "SELECT ID, USERID, CATEGORY, TITLE, DESC1, DESC2, AWARD, YEAR, SCORE FROM RIERECORDS;" ) );
         else
-            updateTable( query + jComboBox1.gety)*/
-        updateTable( cont.getResultSet( queries[index] ) );
-        if( index == 5 ) checkForDiscrepancies();
+            updateTable( cont.getResultSet( query + (String) jComboBox1.getItemAt( index ) ) );
+        if( ( (String) jComboBox1.getItemAt( index ) ).equals( "18" ) ) checkForDiscrepancies();
 
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
@@ -183,9 +182,11 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
     }//GEN-LAST:event_jButton2ActionPerformed
 
     public void checkForDiscrepancies(){
+        System.out.println( "Checking for discrepancies..." );
         int id = -1, title = -1, desc = -1;
         int column = jTable1.getColumnCount(), row = jTable1.getRowCount();
         for( int a = 0; a < column; a++ ){
+            System.out.println( "Column Name = " + jTable1.getColumnName(a) );
             if( jTable1.getColumnName(a).equals( "title" ) )
                 title = a;
             if( jTable1.getColumnName(a).equals( "id" ) )
@@ -194,6 +195,10 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
                 desc = a;
         }
 
+        System.out.println( "title = " + title );
+        System.out.println( "   id = " + id );
+        System.out.println( "desc1 = " + desc );
+        
         if( title == -1 || id == -1 || desc == -1 ) return;
         //Perhaps an exception
 
@@ -239,11 +244,12 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         Collections.sort( toColour );
         ( (CellColourer) jTable1.getDefaultRenderer( Object.class ) ).setDiscrepancies( toColour );
         jTable1.repaint();
-       
+        
+        System.out.println( "Discrepency Check Finished." );
     }
 
     private void updateTable( ResultSet resultSet ){
-        //( (CellColourer) jTable1.getDefaultRenderer( Object.class ) ).clearDiscrepancies();
+        ( (CellColourer) jTable1.getDefaultRenderer( Object.class ) ).clearDiscrepancies();
         try{
             DefaultTableModel dtm = new DefaultTableModel(){
                 @Override
@@ -311,11 +317,20 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         public Component getTableCellRendererComponent( JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col ){
             Component c = super.getTableCellRendererComponent( table, value, isSelected, hasFocus, row, col );
 
-            if( Arrays.binarySearch( discrepancies.toArray(), row ) >= 0 )
-                c.setBackground( Color.YELLOW );
-            else
-                c.setBackground( table.getBackground() );
+            if( Arrays.binarySearch( discrepancies.toArray(), row ) >= 0 ){
+                if( isSelected )
+                    c.setBackground( Color.RED );
+                else
+                    c.setBackground( Color.YELLOW );
+            }
+            else{
+                if( isSelected )
+                    c.setBackground( new Color( 0, 0, 50 ) );
+                else
+                    c.setBackground( table.getBackground() );
 
+            }
+                
             return c;
         }
     }
