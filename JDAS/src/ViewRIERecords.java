@@ -143,10 +143,10 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {                                           
         refresh();
 
-    }//GEN-LAST:event_jComboBox1ActionPerformed                                
+    }                                                                          
 
     private void refresh(){
         
@@ -348,6 +348,16 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
                         c.setBackground( Color.YELLOW );
                     else
                         c.setBackground( new Color( 255, 255, 130 ) );
+                }
+            }
+            else{
+                if( isSelected )
+                    c.setBackground( new Color( 57, 105, 138 ) );
+                else{
+                    if( row%2 == 0 )
+                        c.setBackground( Color.WHITE );
+                    else
+                        c.setBackground( new Color( 242, 242, 242 ) );
                 }
             }
                 
