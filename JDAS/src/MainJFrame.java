@@ -272,7 +272,5 @@ public class MainJFrame extends javax.swing.JFrame implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("gogogo");
-        jLabel1.setText(co.updateStr +" has been successfully updated.");
     }
 }

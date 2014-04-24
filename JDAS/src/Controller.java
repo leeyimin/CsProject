@@ -73,8 +73,6 @@ public class Controller extends Observable {
         ArrayList<ArrayList<String> > addList = parseCSV(file);
         for(ArrayList<String> list: addList){
             ResultSet rs = m.hasConflict(tblname, list);
-            System.out.println(list.get(0));
-            System.out.println(tblname);
             if(rs!=null){
                 String nstr="";
                 for(String s:list) nstr+="\""+s+"\",";
@@ -88,7 +86,6 @@ public class Controller extends Observable {
                 if(n==JOptionPane.YES_OPTION)   m.addRecord(tblname,list);
             }//show dialog for user to choose
             else{
-                System.out.println("GOSH");
                 m.addRecord(tblname,list);
             }
             
