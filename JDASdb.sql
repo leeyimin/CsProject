@@ -11,7 +11,7 @@ primary key(title)
 
 
 
-CREATE TABLE records (
+CREATE TABLE rierecords (
   id int(11) unsigned NOT NULL,
   asset_id int(10) unsigned DEFAULT '0',
   state tinyint(1),

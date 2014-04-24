@@ -16,9 +16,10 @@ import javax.swing.*;
  *
  * @author Acer
  */
-public class Controller extends Observable{
+public class Controller extends Observable {
 
     private Model m;
+    public final static int RIE = 0;
     
     String updateStr;
     
@@ -28,6 +29,8 @@ public class Controller extends Observable{
     public Controller () {
         m=new Model();
     }
+    
+    
 /*
     
     public void uploadPublication (File pFile) throws FileNotFoundException {
@@ -96,6 +99,21 @@ public class Controller extends Observable{
     
     public ResultSet getResultSet(String s) {
         return m.getResultSet(s);
+    }
+
+    void updateIndividualRecord(int table, int id, String colName, String newValue) {
+        String tableName = "";
+        
+        switch (table) {
+            case RIE: 
+                tableName = "RIERECORDS";
+                break;
+            default:
+                //is an error
+                //TODO add handling code in future
+        }
+        
+        m.updateIndividualRecord(tableName, id, colName, newValue);
     }
     
 }
