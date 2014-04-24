@@ -129,12 +129,16 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
             "SELECT ID, USERID, TITLE, DES1, YEAR FROM RIERECORDS WHERE CATEGORY = 18 OR CATEGORY = 19;",
             "SELECT ID, USERID, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 20;"
         };
+        String query = "SELECT ID, USERID, TITLE, DESC1, DESC2, AWARD, YEAR, SCORE FROM RIERECORDS WHERE ";
         //ID is also taken just to make things easier for discrepancy checks.
         //I'm not going to use the ResultSet, and stick with only the Table's content.
         //TODO Change the Integer values to Strings
-
+/*
+        if( index == 0 )
+            updateTable( cont.getResultSet( "SELECT ID, USERID, CATEGORY, TITLE, DESC1, DESC2, AWARD, YEAR, SCORE FROM RIERECORDS;" ) );
+        else
+            updateTable( query + jComboBox1.gety)*/
         updateTable( cont.getResultSet( queries[index] ) );
-
         if( index == 5 ) checkForDiscrepancies();
 
     }//GEN-LAST:event_jComboBox1ActionPerformed
