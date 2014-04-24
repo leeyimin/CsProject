@@ -26,7 +26,7 @@ public class MainJFrame extends javax.swing.JFrame implements Observer{
     public MainJFrame(Controller con) {
         initComponents();
         co = con;
-        co.addObserver(this);
+        //co.addObserver(this);
         this.setLocationRelativeTo(null);
         
     }

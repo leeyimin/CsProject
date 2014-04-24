@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
 // #[regen=yes,id=DCE.C63ACCD1-B180-39EE-C54B-B45A5A53D44D]
 // </editor-fold> 
-public class Model {
+public class Model extends Observable {
     private Connection conn;
 
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
@@ -18,6 +18,7 @@ public class Model {
     public Model () {
         connect();
     }
+   
 /*
     // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
     // #[regen=yes,id=DCE.410FB467-F179-4E58-95DD-9C8641A0320F]
@@ -81,7 +82,7 @@ public class Model {
             String url = "jdbc:mysql://localhost:3306/";
             String dbName = "JDASdb";
             String userName = "root";
-            String password = "";
+            String password ="";// "65644157";
             
             //Create a connect object (via getConnection)
             conn = DriverManager.getConnection(url+dbName,userName,password);
@@ -144,7 +145,6 @@ public class Model {
         if(tblname.equals("rierecords")){
             ResultSet rs =stmt.executeQuery("SELECT * FROM " +tblname+
                     " WHERE id = "+list.get(0));
-            System.out.println("HEREHERE");
             if(!rs.isBeforeFirst())return null;
             boolean flag=false;
             rs.next();
@@ -193,6 +193,8 @@ public class Model {
             else    ps.setInt(3, Integer.parseInt(list.get(2)));
             ps.executeUpdate();
         }
+        setChanged();
+        notifyObservers();
         
     }
 
@@ -206,6 +208,8 @@ public class Model {
         } catch (SQLException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
+        setChanged();
+        notifyObservers();
     }
 
     void deleteRecord(String tableName, int id) {
@@ -218,6 +222,9 @@ public class Model {
         } catch (SQLException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        setChanged();
+        notifyObservers();
     }
 
 }

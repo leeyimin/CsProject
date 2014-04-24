@@ -24,7 +24,7 @@ import javax.swing.event.TableModelListener;
  *
  * @author irham rasyidi
  */
-public class ViewRIERecords extends javax.swing.JFrame implements TableModelListener {
+public class ViewRIERecords extends javax.swing.JFrame implements TableModelListener, Observer {
 
     Controller cont;
     ArrayList<String> categories;
@@ -33,6 +33,8 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
     public ViewRIERecords( Controller cont ) throws SQLException {
         
         this.cont = cont;
+        
+        this.cont.addObserverToModel(this);
 
         ResultSet rs = cont.getResultSet("select distinct category from rierecords;"); 
         int catCount = 0;
@@ -142,6 +144,12 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        refresh();
+
+    }//GEN-LAST:event_jComboBox1ActionPerformed                                
+
+    private void refresh(){
+        
         int index = jComboBox1.getSelectedIndex();
         String[] queries = new String[]{
             "select id, userid, category, title, desc1, desc2, award, year, score from rierecords;", 
@@ -149,7 +157,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
             "SELECT ID, USERID, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 15;",
             "SELECT ID, USERID, DESC1, AWARD, YEAR FROM RIERECORDS WHERE CATEGORY = 16;",
             "SELECT ID, USERID, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 17;",
-            "SELECT ID, USERID, TITLE, DES1, YEAR FROM RIERECORDS WHERE CATEGORY = 18 OR CATEGORY = 19;",
+            "SELECT ID, USERID, TITLE, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 18 OR CATEGORY = 19;",
             "SELECT ID, USERID, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 20;"
         };
         String query = "SELECT ID, USERID, TITLE, DESC1, DESC2, AWARD, YEAR, SCORE FROM RIERECORDS WHERE CATEGORY = ";
@@ -163,7 +171,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
             updateTable( cont.getResultSet( query + (String) jComboBox1.getItemAt( index ) ) );
         if( ( (String) jComboBox1.getItemAt( index ) ).equals( "18" ) ) checkForDiscrepancies();
 
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }                                          
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         System.out.println( jTable1.getColumnModel().getColumn(1).getHeaderValue() );
@@ -254,7 +262,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         ( (CellColourer) jTable1.getDefaultRenderer( Object.class ) ).setDiscrepancies( toColour );
         jTable1.repaint();
         
-        System.out.println( "Discrepency Check Finished." );
+        System.out.println( "Discrepancy Check Finished." );
     }
 
     private void updateTable( ResultSet resultSet ){
@@ -307,6 +315,11 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 
+    @Override
+    public void update(Observable o, Object arg) {
+        refresh();
+    }
+
     private class CellColourer extends DefaultTableCellRenderer{
         ArrayList<Integer> discrepancies;
 
@@ -347,9 +360,8 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         System.out.println("Table changed.");
         
         int row = e.getFirstRow();
-        int col = e.getColumn(); //TODO fix year bug
+        int col = e.getColumn(); 
         
-        //String colName = jTable1.getModel().getColumnName(col);
         String colName = (String) dtcm.getColumn(col).getHeaderValue(); 
         //TODO this is sort of a hack bc column name may not be the table name. cahnge later
         String newValue = (String) jTable1.getModel().getValueAt(row, col);

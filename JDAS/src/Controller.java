@@ -3,8 +3,6 @@ import java.awt.*;
 import java.io.*;
 import java.sql.ResultSet;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 
 /*
@@ -17,7 +15,7 @@ import javax.swing.*;
  *
  * @author Acer
  */
-public class Controller extends Observable {
+public class Controller {
 
     private Model m;
     public final static int RIE = 0;
@@ -31,6 +29,9 @@ public class Controller extends Observable {
         m=new Model();
     }
     
+    public void addObserverToModel(Observer o) {
+        m.addObserver(o);
+    }
     
 /*
     
@@ -87,7 +88,6 @@ public class Controller extends Observable {
                 }
             }
             res.add(list);
-            System.out.println("HERE");
         }
         
         return res;
@@ -163,7 +163,7 @@ public class Controller extends Observable {
                 //is an error
                 //TODO add handling code in future
         }
-        
+        System.out.println("Controller's deleteRecord()");
         m.deleteRecord(tableName, id);
     }
     

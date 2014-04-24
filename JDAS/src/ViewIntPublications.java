@@ -1,6 +1,8 @@
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Vector;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
@@ -17,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Acer
  */
-public class ViewIntPublications extends javax.swing.JFrame  {
+public class ViewIntPublications extends javax.swing.JFrame implements Observer  {
 
     /**
      * Creates new form PublicationFrame
@@ -27,6 +29,8 @@ public class ViewIntPublications extends javax.swing.JFrame  {
         initComponents();
         
         controller = cont;
+        
+        cont.addObserverToModel(this);
         
         ResultSet rs = controller.getResultSet("select * from publication");
         updateTable(rs);
@@ -82,7 +86,7 @@ public class ViewIntPublications extends javax.swing.JFrame  {
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Internal Publication List");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -132,7 +136,6 @@ public class ViewIntPublications extends javax.swing.JFrame  {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -142,5 +145,11 @@ public class ViewIntPublications extends javax.swing.JFrame  {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update(Observable o, Object arg) {
+        ResultSet rs = controller.getResultSet("select * from publication");
+        updateTable(rs);
+    }
 
 }
