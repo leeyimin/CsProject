@@ -1,3 +1,12 @@
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.DefaultTableModel;
+
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,15 +17,58 @@
  *
  * @author Acer
  */
-public class ViewIntPublications extends javax.swing.JFrame {
+public class ViewIntPublications extends javax.swing.JFrame  {
 
     /**
      * Creates new form PublicationFrame
      */
-    public ViewIntPublications() {
+    Controller controller;
+    public ViewIntPublications(Controller cont) {
         initComponents();
+        
+        controller = cont;
+        
+        ResultSet rs = controller.getResultSet("select * from publication");
+        updateTable(rs);
     }
 
+    private void updateTable( ResultSet resultSet ){
+        //( (CellColourer) jTable1.getDefaultRenderer( Object.class ) ).clearDiscrepancies();
+        try{
+            DefaultTableModel dtm = new DefaultTableModel(){
+                @Override
+                public boolean isCellEditable( int row, int column ){
+                    return false;
+                }
+            };
+
+            Vector<Object> nextRow = new Vector<Object>();
+
+            int colCount = resultSet.getMetaData().getColumnCount();
+            
+            dtm.setColumnCount(colCount);
+            
+            while( resultSet.next() ) { 
+                for( int a = 1; a <= colCount; a++ ) {
+                    nextRow.add(resultSet.getString(a));
+                }
+
+                dtm.addRow( nextRow.toArray() );
+                nextRow.clear();
+            } 
+
+            jTable1.setModel( dtm );
+            DefaultTableColumnModel dtcm = (DefaultTableColumnModel) jTable1.getColumnModel();
+
+            for( int a = 0; a < resultSet.getMetaData().getColumnCount(); a++ ){
+                dtcm.getColumn(a).setHeaderValue( resultSet.getMetaData().getColumnName(a+1) );
+            }
+        }
+        catch( SQLException exp ){
+            System.out.println(exp);
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -84,44 +136,11 @@ public class ViewIntPublications extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewIntPublications.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewIntPublications.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewIntPublications.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ViewIntPublications.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ViewIntPublications().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
 }

@@ -116,6 +116,11 @@ public class MainJFrame extends javax.swing.JFrame implements Observer{
         });
 
         jButton6.setText("View Publication List");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -210,8 +215,8 @@ public class MainJFrame extends javax.swing.JFrame implements Observer{
             v.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(ViewRIERecords.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(this, "Eggs are not supposed to be green.");
-            System.out.println("AAAAAAAAAAAA");
+            JOptionPane.showMessageDialog(this, "Error connecting to database.");
+            //System.out.println("AAAAAAAAAAAA");
         }
         
         //u.setAlwaysOnTop(true);
@@ -220,6 +225,13 @@ public class MainJFrame extends javax.swing.JFrame implements Observer{
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        ViewIntPublications v = new ViewIntPublications(co);
+        v.setLocationRelativeTo(this);
+        v.setVisible(true);
+        
+    }//GEN-LAST:event_jButton6ActionPerformed
 
         
     /**
