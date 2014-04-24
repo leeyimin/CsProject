@@ -30,7 +30,17 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
     ArrayList<String> categories;
     DefaultTableColumnModel dtcm ;
     /** Creates new form ViewRIERecords */
+    
+    Hashtable<Integer, String> allCategories = new Hashtable<Integer, String>();
+    
     public ViewRIERecords( Controller cont ) throws SQLException {
+        allCategories.put(19, "Other research project");
+        allCategories.put(14, "Publication");
+        allCategories.put(15, "Intl. scientific conference");
+        allCategories.put(16, "Research award");
+        allCategories.put(17, "Science fair/forum");
+        allCategories.put(18, "Advanced Research Project");
+        allCategories.put(20, "Other research activity");
         
         this.cont = cont;
         
@@ -43,7 +53,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         categories.add("All");
         
         while (rs.next()) {
-            categories.add(rs.getString(1));
+            categories.add( allCategories.get( Integer.parseInt( rs.getString(1) )) );
         }
  
         initComponents();
@@ -279,12 +289,18 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
             Vector<Object> nextRow = new Vector<Object>();
 
             int colCount = resultSet.getMetaData().getColumnCount();
+            int selectedOption = jComboBox1.getSelectedIndex();
             
             dtm.setColumnCount(colCount);
             
             while( resultSet.next() ) { 
                 for( int a = 1; a <= colCount; a++ ) {
-                    nextRow.add(resultSet.getString(a));
+                    if (selectedOption == 0 && a == 3) {
+                        //change category to String representation
+                        nextRow.add(allCategories.get( (Integer) resultSet.getObject(a) ));
+                        System.out.println(allCategories.get( (Integer) resultSet.getObject(a) ));
+                    }
+                    else nextRow.add(resultSet.getString(a));
                 }
 
                 dtm.addRow( nextRow.toArray() );
