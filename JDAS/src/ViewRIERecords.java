@@ -293,7 +293,13 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         }
     }
 
-
+    public void checkForPublication(){
+        ArrayList<Integer> toColour = new ArrayList<Integer>();
+        
+         Collections.sort( toColour );
+        ( (CellColourer) jTable1.getDefaultRenderer( Object.class ) ).setDiscrepancies( toColour );
+        jTable1.repaint();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

@@ -82,7 +82,7 @@ public class Model extends Observable {
             String url = "jdbc:mysql://localhost:3306/";
             String dbName = "JDASdb";
             String userName = "root";
-            String password ="";// "65644157";
+            String password = "65644157";
             
             //Create a connect object (via getConnection)
             conn = DriverManager.getConnection(url+dbName,userName,password);
@@ -225,6 +225,15 @@ public class Model extends Observable {
         
         setChanged();
         notifyObservers();
+    }
+
+    public ResultSet checkPubAndRec() {
+        String query= "Select id from rierecords, publication where (rierecords.desc1 "
+                + "like concat(‘%’,publication.title,’%’) and "
+                + "not(rierecords.desc1=publication.desc1 and "
+                + "rierecords.desc1 =publication.year) ) or "
+                + "rierecords.desc1 not like concat(‘%’,publication.title,’%’;";
+        return null;
     }
 
 }
