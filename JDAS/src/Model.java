@@ -144,7 +144,6 @@ public class Model {
         if(tblname.equals("rierecords")){
             ResultSet rs =stmt.executeQuery("SELECT * FROM " +tblname+
                     " WHERE id = "+list.get(0));
-            System.out.println("HEREHERE");
             if(!rs.isBeforeFirst())return null;
             boolean flag=false;
             rs.next();
