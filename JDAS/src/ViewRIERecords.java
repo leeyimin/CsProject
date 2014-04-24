@@ -166,6 +166,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        System.out.println( jTable1.getColumnModel().getColumn(1).getHeaderValue() );
         int[] selected = jTable1.getSelectedRows();
         for (int i: selected){
             i = Integer.parseInt((String) jTable1.getModel().getValueAt(i, 0));
@@ -186,31 +187,28 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         int id = -1, title = -1, desc = -1;
         int column = jTable1.getColumnCount(), row = jTable1.getRowCount();
         for( int a = 0; a < column; a++ ){
-            System.out.println( "Column Name = " + jTable1.getColumnName(a) );
-            if( jTable1.getColumnName(a).equals( "title" ) )
+            if( jTable1.getColumnModel().getColumn(a).getHeaderValue().equals( "title" ) )
                 title = a;
-            if( jTable1.getColumnName(a).equals( "id" ) )
+            if( jTable1.getColumnModel().getColumn(a).getHeaderValue().equals( "id" ) )
                 id = a;
-            if( jTable1.getColumnName(a).equals( "desc1" ) )
+            if( jTable1.getColumnModel().getColumn(a).getHeaderValue().equals( "desc1" ) )
                 desc = a;
         }
-
-        System.out.println( "title = " + title );
-        System.out.println( "   id = " + id );
-        System.out.println( "desc1 = " + desc );
         
         if( title == -1 || id == -1 || desc == -1 ) return;
         //Perhaps an exception
 
         ArrayList< String[] > records = new ArrayList< String[] >();
         String[] nextRecord = new String[4];
-
+        
         for( int a = 0; a < row; a++ ){
             nextRecord[0] = (String) jTable1.getModel().getValueAt( a, id );
             nextRecord[1] = (String) jTable1.getModel().getValueAt( a, title );
             nextRecord[2] = (String) jTable1.getModel().getValueAt( a, desc );
             nextRecord[3] = Integer.toString( a );
-            records.add( nextRecord );
+            
+            String[] toAdd = nextRecord.clone();
+            records.add( toAdd );
         }
 
         Collections.sort( records, new Comparator<String[]>(){
@@ -218,6 +216,12 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
                 return a[1].compareTo( b[1] );
             }
         });
+        
+      
+        
+        for( String[] s : records ){
+            System.out.println( s[0] + "\t" + s[1] + "\t" + s[2] + "\t" + s[3] );
+        }
 
 
         ArrayList<Integer> toColour = new ArrayList<Integer>();
@@ -228,17 +232,22 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
             disc = false;
 
             for( end = a+1; end < row && records.get( reference )[1].equals( records.get( end )[1] ); end++ ){
+                System.out.println( records.get( reference )[2] );
                 if( disc ) continue;
                 if( !records.get( reference )[2].equals( records.get( end )[2] ) )
                     disc = true;
             }
+            
+            System.out.println( "Start = " + reference );
+            System.out.println( "  End = " + end );
+            System.out.println( "Discrepancy = " + disc );
 
             if( disc ){
                 for( int i = reference; i < end; i++ )
                     toColour.add( Integer.parseInt( records.get(i)[3] ) );
             }
 
-            a = end;
+            a = end-1;
         }
 
         Collections.sort( toColour );
@@ -318,17 +327,15 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
             Component c = super.getTableCellRendererComponent( table, value, isSelected, hasFocus, row, col );
 
             if( Arrays.binarySearch( discrepancies.toArray(), row ) >= 0 ){
-                if( isSelected )
+                if( isSelected ){
                     c.setBackground( Color.RED );
-                else
-                    c.setBackground( Color.YELLOW );
-            }
-            else{
-                if( isSelected )
-                    c.setBackground( new Color( 0, 0, 50 ) );
-                else
-                    c.setBackground( table.getBackground() );
-
+                }
+                else{
+                    if( row%2 == 0 )
+                        c.setBackground( Color.YELLOW );
+                    else
+                        c.setBackground( new Color( 255, 255, 130 ) );
+                }
             }
                 
             return c;
