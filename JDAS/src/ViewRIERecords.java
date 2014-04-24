@@ -10,7 +10,9 @@
  */
 
 import java.sql.*;
+import javax.swing.*;
 import javax.swing.table.*;
+import java.awt.*;
 import java.util.*;
 
 import javax.swing.DefaultComboBoxModel;
@@ -24,6 +26,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
 
     Controller cont;
     ArrayList<String> categories;
+
     /** Creates new form ViewRIERecords */
     public ViewRIERecords( Controller cont ) throws SQLException {
         
@@ -41,6 +44,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
         }
  
         initComponents();
+        jTable1.setDefaultRenderer( Object.class, new CellColourer() );
         
         rs = cont.getResultSet("select * from records;"); 
         updateTable(rs);
@@ -149,12 +153,13 @@ public class ViewRIERecords extends javax.swing.JFrame {
         //Perhaps an exception
 
         ArrayList< String[] > records = new ArrayList< String[] >();
-        String[] nextRecord = new String[3];
+        String[] nextRecord = new String[4];
 
         for( int a = 0; a < row; a++ ){
             nextRecord[0] = (String) jTable1.getModel().getValueAt( a, id );
             nextRecord[1] = (String) jTable1.getModel().getValueAt( a, title );
             nextRecord[2] = (String) jTable1.getModel().getValueAt( a, desc );
+            nextRecord[3] = Integer.toString( a );
             records.add( nextRecord );
         }
 
@@ -164,9 +169,10 @@ public class ViewRIERecords extends javax.swing.JFrame {
             }
         });
 
+
+        ArrayList<Integer> toColour = new ArrayList<Integer>();
         int reference, end;
         boolean disc;
-        ArrayList<Integer> toColour = new ArrayList<Integer>();
         for( int a = 0; a < row; a++ ){
             reference = a;
             disc = false;
@@ -179,25 +185,21 @@ public class ViewRIERecords extends javax.swing.JFrame {
 
             if( disc ){
                 for( int i = reference; i < end; i++ )
-                    toColour.add( Integer.parseInt( records.get(i)[0] ) );
+                    toColour.add( Integer.parseInt( records.get(i)[3] ) );
             }
 
             a = end;
         }
 
         Collections.sort( toColour );
-
-        Integer rowID;
-        for( int a = 0; a < row; a++ ){
-            rowID = Integer.parseInt( (String) jTable1.getModel().getValueAt( a, id ) );
-            if( rowID == toColour.get( Arrays.binarySearch( toColour.toArray(), rowID ) ) )
-                
-        }
-
+        ( (CellColourer) jTable1.getDefaultRenderer( Object.class ) ).setDiscrepancies( toColour );
+        jTable1.repaint();
         //TODO to be implemented
     }
 
     private void updateTable( ResultSet resultSet ){
+        ( (CellColourer) jTable1.getDefaultRenderer( Object.class ) ).clearDiscrepancies();
+
         try{
             DefaultTableModel dtm = new DefaultTableModel(){
                 @Override
@@ -213,7 +215,6 @@ public class ViewRIERecords extends javax.swing.JFrame {
             dtm.setColumnCount(colCount);
             
             while( resultSet.next() ) { 
-;
                 for( int a = 1; a <= colCount/*dtm.getColumnCount()*/; a++ ) {
                     
                     nextRow.add(resultSet.getString(a));
@@ -234,7 +235,8 @@ public class ViewRIERecords extends javax.swing.JFrame {
             System.out.println(exp);
         }
     }
-  
+
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox jComboBox1;
@@ -243,4 +245,33 @@ public class ViewRIERecords extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 
+
+
+    private class CellColourer extends DefaultTableCellRenderer{
+        ArrayList<Integer> discrepancies;
+
+        public CellColourer(){
+            discrepancies = new ArrayList<Integer>();
+        }
+
+        public void setDiscrepancies( ArrayList<Integer> toColour ){
+            discrepancies = toColour;
+        }
+
+        public void clearDiscrepancies(){
+            discrepancies.clear();
+        }
+
+        @Override
+        public Component getTableCellRendererComponent( JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col ){
+            Component c = super.getTableCellRendererComponent( table, value, isSelected, hasFocus, row, col );
+
+            if( Arrays.binarySearch( discrepancies.toArray(), row ) >= 0 )
+                c.setBackground( Color.YELLOW );
+            else
+                c.setBackground( table.getBackground() );
+
+            return c;
+        }
+    }
 }
