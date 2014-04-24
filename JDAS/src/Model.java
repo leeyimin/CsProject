@@ -184,5 +184,17 @@ public class Model {
         
     }
 
+    void updateIndividualRecord(String tableName, int id, String colName, String newValue) {
+        try {
+            Statement stmt = conn.createStatement();
+            String updateString = "UPDATE " + tableName + " SET " + colName + " = \'" + newValue + "\' WHERE ID = " + id + ";";
+            System.out.println(updateString);
+            
+            stmt.executeUpdate(updateString);
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }
 

@@ -14,16 +14,19 @@ import javax.swing.table.*;
 import java.util.*;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 
 
 /**
  *
  * @author irham rasyidi
  */
-public class ViewRIERecords extends javax.swing.JFrame {
+public class ViewRIERecords extends javax.swing.JFrame implements TableModelListener {
 
     Controller cont;
     ArrayList<String> categories;
+    DefaultTableColumnModel dtcm ;
     /** Creates new form ViewRIERecords */
     public ViewRIERecords( Controller cont ) throws SQLException {
         
@@ -42,9 +45,9 @@ public class ViewRIERecords extends javax.swing.JFrame {
  
         initComponents();
         
-        rs = cont.getResultSet("select * from rierecords;"); 
+        rs = cont.getResultSet("select id, userid, category, title, desc1, desc2, award, year, score from rierecords;"); 
         updateTable(rs);
-    
+        
     }
 
     /** This method is called from within the constructor to
@@ -115,7 +118,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         int index = jComboBox1.getSelectedIndex();
         String[] queries = new String[]{
-            "SELECT * FROM RIERECORDS;", 
+            "select id, userid, category, title, desc1, desc2, award, year, score from rierecords;", 
             "SELECT ID, USERID, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 14;",
             "SELECT ID, USERID, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 15;",
             "SELECT ID, USERID, DESC1, AWARD, YEAR FROM RIERECORDS WHERE CATEGORY = 16;",
@@ -195,15 +198,16 @@ public class ViewRIERecords extends javax.swing.JFrame {
         }
 
        
-    }
+    } 
 
     private void updateTable( ResultSet resultSet ){
+        
         try{
             DefaultTableModel dtm = new DefaultTableModel(){
                 @Override
                 public boolean isCellEditable( int row, int column ){
-                    if (column == 1) return true;
-                    else return false;
+                    if (column <3) return false;
+                    else return true;
                 }
             };
 
@@ -214,9 +218,7 @@ public class ViewRIERecords extends javax.swing.JFrame {
             dtm.setColumnCount(colCount);
             
             while( resultSet.next() ) { 
-;
-                for( int a = 1; a <= colCount/*dtm.getColumnCount()*/; a++ ) {
-                    
+                for( int a = 1; a <= colCount; a++ ) {
                     nextRow.add(resultSet.getString(a));
                 }
 
@@ -224,8 +226,9 @@ public class ViewRIERecords extends javax.swing.JFrame {
                 nextRow.clear();
             } 
 
+            dtm.addTableModelListener(this);
             jTable1.setModel( dtm );
-            DefaultTableColumnModel dtcm = (DefaultTableColumnModel) jTable1.getColumnModel();
+            dtcm = (DefaultTableColumnModel) jTable1.getColumnModel();
 
             for( int a = 0; a < resultSet.getMetaData().getColumnCount(); a++ ){
                 dtcm.getColumn(a).setHeaderValue( resultSet.getMetaData().getColumnName(a+1) );
@@ -243,5 +246,24 @@ public class ViewRIERecords extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void tableChanged(TableModelEvent e) {
+        System.out.println("Table changed.");
+        
+        int row = e.getFirstRow();
+        int col = e.getColumn();
+        
+        //String colName = jTable1.getModel().getColumnName(col);
+        String colName = (String) dtcm.getColumn(col).getHeaderValue(); 
+        //TODO this is sort of a hack bc column name may not be the table name. cahnge later
+        String newValue = (String) jTable1.getModel().getValueAt(row, col);
+        //TODO SANITIZE INPUT
+        System.out.println("New value = " + newValue);
+        
+        int id = Integer.parseInt((String) jTable1.getModel().getValueAt(row, 0)); //hardcoding...
+        
+        cont.updateIndividualRecord(Controller.RIE, id, colName, newValue);
+    }
 
 }
