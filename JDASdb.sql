@@ -1,3 +1,4 @@
+drop database JDASdb;
 create database JDASdb;
 
 use JDASdb
@@ -22,7 +23,7 @@ CREATE TABLE rierecords (
   desc1 text NOT NULL,
   desc2 text,
   award varchar(50),
-  year year(4) NOT NULL,
+  year int NOT NULL,
   score varchar(255),
   userid varchar(255) NOT NULL,
   PRIMARY KEY (id)
