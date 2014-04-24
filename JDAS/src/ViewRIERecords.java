@@ -14,6 +14,8 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.TableModelEvent;
@@ -190,6 +192,11 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
             int c = allCategoriesRev.get((String) jComboBox1.getItemAt(index));
             updateTable( cont.getResultSet( query + c ) );
             if( c == 18 ) checkForDiscrepancies();
+            if(c==14)   try {
+                checkForPublication();
+            } catch (SQLException ex) {
+                Logger.getLogger(ViewRIERecords.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
 
@@ -321,9 +328,25 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         }
     }
 
-    public void checkForPublication(){
+    public void checkForPublication() throws SQLException{
         ArrayList<Integer> toColour = new ArrayList<Integer>();
         
+        int id = -1;
+        int column = jTable1.getColumnCount(), row = jTable1.getRowCount();
+        for( int a = 0; a < column; a++ ){
+            if( jTable1.getColumnModel().getColumn(a).getHeaderValue().equals( "id" ) )
+                id = a;
+        }
+        ResultSet rs=cont.checkPublication();
+        ArrayList<Integer> num= new ArrayList<>();
+        while(rs.next()){
+            num.add(rs.getInt(1));
+        }
+        for(int i=0;i<jTable1.getRowCount();i++){
+            for(Integer j:num){
+                if(((String)jTable1.getModel().getValueAt(i, id)).equals(j.toString())) toColour.add(i);
+            }
+        }
          Collections.sort( toColour );
         ( (CellColourer) jTable1.getDefaultRenderer( Object.class ) ).setDiscrepancies( toColour );
         jTable1.repaint();

@@ -229,11 +229,11 @@ public class Model extends Observable {
 
     public ResultSet checkPubAndRec() {
         String query= "Select id from rierecords, publication where (rierecords.desc1 "
-                + "like concat(‘%’,publication.title,’%’) and "
+                + "like concat(\'%\',publication.title,\'%\') and "
                 + "not(rierecords.desc1=publication.desc1 and "
                 + "rierecords.desc1 =publication.year) ) or "
-                + "rierecords.desc1 not like concat(‘%’,publication.title,’%’;";
-        return null;
+                + "rierecords.desc1 not like concat(\'%\',publication.title,\'%\');";
+        return getResultSet(query);
     }
 
 }
