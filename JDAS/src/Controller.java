@@ -112,5 +112,19 @@ public class Controller extends Observable {
         
         m.updateIndividualRecord(tableName, id, colName, newValue);
     }
+
+    void deleteRecord(int table, int id) {
+        String tableName = "";
+        switch (table) {
+            case RIE: 
+                tableName = "RIERECORDS";
+                break;
+            default:
+                //is an error
+                //TODO add handling code in future
+        }
+        
+        m.deleteRecord(tableName, id);
+    }
     
 }

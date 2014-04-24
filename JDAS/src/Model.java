@@ -206,5 +206,17 @@ public class Model {
         }
     }
 
+    void deleteRecord(String tableName, int id) {
+        try {
+            Statement stmt = conn.createStatement();
+            String updateString = "DELETE FROM " + tableName + " WHERE ID = " + id + ";";
+            System.out.println(updateString);
+            
+            stmt.executeUpdate(updateString);
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }
 
