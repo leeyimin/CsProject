@@ -32,6 +32,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
     /** Creates new form ViewRIERecords */
     
     Hashtable<Integer, String> allCategories = new Hashtable<Integer, String>();
+    Hashtable<String, Integer> allCategoriesRev = new Hashtable<String, Integer>();
     
     public ViewRIERecords( Controller cont ) throws SQLException {
         allCategories.put(19, "Other research project");
@@ -41,6 +42,14 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         allCategories.put(17, "Science fair/forum");
         allCategories.put(18, "Advanced Research Project");
         allCategories.put(20, "Other research activity");
+        
+        allCategoriesRev.put("Other research project", 19);
+        allCategoriesRev.put("Publication", 14);
+        allCategoriesRev.put("Intl. scientific conference", 15);
+        allCategoriesRev.put("Research award", 16);
+        allCategoriesRev.put("Science fair/forum", 17);
+        allCategoriesRev.put("Advanced Research Project", 18);
+        allCategoriesRev.put("Other research activity", 20);
         
         this.cont = cont;
         
@@ -175,11 +184,14 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         //I'm not going to use the ResultSet, and stick with only the Table's content.
         //TODO Change the Integer values to Strings
 
+        int c = allCategoriesRev.get(jComboBox1.getItemAt(index));
         if( index == 0 )
             updateTable( cont.getResultSet( "SELECT ID, USERID, CATEGORY, TITLE, DESC1, DESC2, AWARD, YEAR, SCORE FROM RIERECORDS;" ) );
-        else
-            updateTable( cont.getResultSet( query + (String) jComboBox1.getItemAt( index ) ) );
-        if( ( (String) jComboBox1.getItemAt( index ) ).equals( "18" ) ) checkForDiscrepancies();
+        else{
+            
+            updateTable( cont.getResultSet( query + c ) );
+        }
+        if( c == 18 ) checkForDiscrepancies();
 
     }                                          
 
