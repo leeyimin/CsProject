@@ -184,14 +184,15 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         //I'm not going to use the ResultSet, and stick with only the Table's content.
         //TODO Change the Integer values to Strings
 
-        int c = allCategoriesRev.get(jComboBox1.getItemAt(index));
+        int c = allCategoriesRev.get((String) jComboBox1.getItemAt(index));
         if( index == 0 )
             updateTable( cont.getResultSet( "SELECT ID, USERID, CATEGORY, TITLE, DESC1, DESC2, AWARD, YEAR, SCORE FROM RIERECORDS;" ) );
         else{
             
             updateTable( cont.getResultSet( query + c ) );
+            if( c == 18 ) checkForDiscrepancies();
         }
-        if( c == 18 ) checkForDiscrepancies();
+        
 
     }                                          
 
