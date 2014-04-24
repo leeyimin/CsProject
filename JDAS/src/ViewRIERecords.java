@@ -198,7 +198,8 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         System.out.println( jTable1.getColumnModel().getColumn(1).getHeaderValue() );
         int[] selected = jTable1.getSelectedRows();
-        for (int i: selected){
+        for ( int k = selected.length - 1; k >= 0; k-- ) {
+            int i = selected[k];
             i = Integer.parseInt((String) jTable1.getModel().getValueAt(i, 0));
             
             cont.deleteRecord(cont.RIE, i);
