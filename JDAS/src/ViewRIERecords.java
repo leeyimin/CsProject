@@ -123,11 +123,11 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 868, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, 0, 661, Short.MAX_VALUE))
+                        .addComponent(jComboBox1, 0, 809, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -234,13 +234,6 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
                 return a[1].compareTo( b[1] );
             }
         });
-        
-      
-        
-        for( String[] s : records ){
-            System.out.println( s[0] + "\t" + s[1] + "\t" + s[2] + "\t" + s[3] );
-        }
-
 
         ArrayList<Integer> toColour = new ArrayList<Integer>();
         int reference, end;
@@ -250,15 +243,10 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
             disc = false;
 
             for( end = a+1; end < row && records.get( reference )[1].equals( records.get( end )[1] ); end++ ){
-                System.out.println( records.get( reference )[2] );
                 if( disc ) continue;
                 if( !records.get( reference )[2].equals( records.get( end )[2] ) )
                     disc = true;
             }
-            
-            System.out.println( "Start = " + reference );
-            System.out.println( "  End = " + end );
-            System.out.println( "Discrepancy = " + disc );
 
             if( disc ){
                 for( int i = reference; i < end; i++ )
