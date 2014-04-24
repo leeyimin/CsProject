@@ -87,7 +87,6 @@ public class Controller extends Observable {
                 }
             }
             res.add(list);
-            System.out.println("HERE");
         }
         
         return res;
