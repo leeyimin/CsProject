@@ -194,7 +194,7 @@ public class MainJFrame extends javax.swing.JFrame implements Observer{
             System.out.println("You chose to open this file: " +
                 fc.getSelectedFile().getName());
             try {
-                co.mergeAndUpdate("publication", fc.getSelectedFile());
+                co.mergeAndUpdate("publication", fc.getSelectedFile(),this);
             } catch (Exception ex) {
                 Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
             }

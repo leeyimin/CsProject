@@ -1,4 +1,5 @@
 
+import java.awt.*;
 import java.io.*;
 import java.sql.ResultSet;
 import java.util.*;
@@ -92,20 +93,35 @@ public class Controller extends Observable {
         return res;
     }//to be improved
     
-    public void mergeAndUpdate (String tblname, File file) throws Exception {
-      
+    public void mergeAndUpdate (String tblname, File file, Component com) throws Exception {
+      JOptionPane.showMessageDialog(com, tblname);
         ArrayList<ArrayList<String> > addList = parseCSV(file);
         for(ArrayList<String> list: addList){
             ResultSet rs = m.hasConflict(tblname, list);
             if(rs!=null){
                 String nstr="";
-                for(String s:list) nstr+="\""+s+"\",";
-                nstr=nstr.substring(0, nstr.length()-1);
-                String ostr ="";
-                for(int i=1;i<=rs.getMetaData().getColumnCount();i++)
+                String ostr="";
+                if(tblname.equals("rierecords")){
+                    for(int i=0;i<13;i++){
+                        if(i==3)continue;
+                        nstr+="\""+list.get(i)+"\",";
+                    }
+                    for(int i=1;i<=13;i++){
+                        if(i==4)continue;
+                        ostr+="\""+rs.getString(i)+"\",";
+                    }
+                    
+                }//datetime cannot be printed properly
+                else{
+                    for(String s:list) nstr+="\""+s+"\",";
+                    
+                    for(int i=1;i<=rs.getMetaData().getColumnCount();i++)
                     ostr+="\""+rs.getString(i)+"\",";
+                    
+                }
+                nstr=nstr.substring(0, nstr.length()-1);
                 ostr=ostr.substring(0, ostr.length()-1);
-                int n =JOptionPane.showConfirmDialog(null, "Do you want to replace\n"+ostr
+                int n =JOptionPane.showConfirmDialog(com, "Do you want to replace\n"+ostr
                         +"\nwith\n"+nstr, "Overwrite current record?", JOptionPane.YES_NO_OPTION);
                 if(n==JOptionPane.YES_OPTION)   m.addRecord(tblname,list);
             }//show dialog for user to choose
@@ -115,7 +131,7 @@ public class Controller extends Observable {
             
         }
         //show dialog for successful update?
-        JOptionPane.showMessageDialog(null, "The records have been updated.");
+        JOptionPane.showMessageDialog(com, "The records have been updated.");
     }
     
     public ResultSet getResultSet(String s) {

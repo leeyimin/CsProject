@@ -78,7 +78,7 @@ public class UploadRIEOption extends javax.swing.JFrame {
         
         if(returnVal == JFileChooser.APPROVE_OPTION) {
             try {
-                controller.mergeAndUpdate("rierecords", fc.getSelectedFile());
+                controller.mergeAndUpdate("rierecords", fc.getSelectedFile(),this);
                 System.out.println("upload");
             } catch (Exception ex) {
                 Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);

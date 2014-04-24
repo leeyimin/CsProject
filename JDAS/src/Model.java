@@ -81,7 +81,7 @@ public class Model {
             String url = "jdbc:mysql://localhost:3306/";
             String dbName = "JDASdb";
             String userName = "root";
-            String password = "";
+            String password = "65644157";
             
             //Create a connect object (via getConnection)
             conn = DriverManager.getConnection(url+dbName,userName,password);
@@ -187,12 +187,10 @@ public class Model {
             stmt.executeUpdate("DELETE FROM "+tblname+" WHERE title=\""+list.get(0)+"\"");
             String addQuery ="INSERT INTO publication() VALUES(?,?,?)";
             PreparedStatement ps = conn.prepareStatement(addQuery);
-            int count =1;
-            for(String str:list){
-                ps.setString(count, str);
-                
-                count++;
-            }
+            ps.setString(1, list.get(0));
+            ps.setString(2, list.get(1));
+            if(list.get(2).isEmpty())   ps.setNull(3, java.sql.Types.INTEGER);
+            else    ps.setInt(3, Integer.parseInt(list.get(2)));
             ps.executeUpdate();
         }
         

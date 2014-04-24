@@ -6,7 +6,7 @@ use JDASdb
 CREATE TABLE publication(
 title varchar(100) not null,
 desc1 varchar(500),
-year integer,
+year integer not null,
 primary key(title)
 );
 
