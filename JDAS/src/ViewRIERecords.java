@@ -46,7 +46,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         }
  
         initComponents();
-        jTable1.setDefaultRenderer( Object.class, new CellColourer() );
+        //jTable1.setDefaultRenderer( Object.class, new CellColourer() );
         
         rs = cont.getResultSet("select id, userid, category, title, desc1, desc2, award, year, score from rierecords;"); 
         updateTable(rs);
@@ -200,7 +200,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
     }
 
     private void updateTable( ResultSet resultSet ){
-        ( (CellColourer) jTable1.getDefaultRenderer( Object.class ) ).clearDiscrepancies();
+        //( (CellColourer) jTable1.getDefaultRenderer( Object.class ) ).clearDiscrepancies();
         try{
             DefaultTableModel dtm = new DefaultTableModel(){
                 @Override
