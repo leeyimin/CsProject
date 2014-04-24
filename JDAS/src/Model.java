@@ -141,7 +141,7 @@ public class Model {
 
     public ResultSet hasConflict(String tblname, ArrayList<String> list) throws SQLException {
         Statement stmt=conn.createStatement();
-        if(tblname.equals("records")){
+        if(tblname.equals("rierecords")){
             ResultSet rs =stmt.executeQuery("SELECT * FROM " +tblname+
                     " WHERE id = "+list.get(0));
             if(!rs.isBeforeFirst())return null;
@@ -169,7 +169,7 @@ public class Model {
     public void addRecord(String tblname, ArrayList<String> list) throws SQLException {
         Statement stmt = conn.createStatement();
         
-        if(tblname.equals("records")){
+        if(tblname.equals("rierecords")){
             stmt.executeQuery("DELETE FROM "+tblname+" WHERE id="+list.get(0));
             String addQuery ="INSERT INTO "+tblname+"() VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(addQuery);
