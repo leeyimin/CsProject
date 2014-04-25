@@ -75,11 +75,11 @@ public class ViewStudentRecords extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 330, Short.MAX_VALUE)
+                        .addComponent(jButton1))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -104,7 +104,14 @@ public class ViewStudentRecords extends javax.swing.JFrame {
      */
     
     private void refresh(){
-        ResultSet rs = cont.getResultSet( "SELECT * FROM STUDENTRECORDS" );
+        ResultSet rs = cont.getResultSet( 
+        "SELECT STUDENTID, NAME, CASE " +
+            "WHEN STUDENTID IN ( SELECT DISTINCT USERID FROM RIERECORDS WHERE CATEGORY = 18 ) " +
+                "THEN 'Yes' " +
+            "ELSE " +
+                "'No' " +
+            "END AS 'Has ARP Record' " +
+        "FROM STUDENTRECORDS" );
         updateTable( rs );
         noArpCheck();
         jTable1.repaint();
@@ -150,22 +157,10 @@ public class ViewStudentRecords extends javax.swing.JFrame {
     
     public void noArpCheck(){
         System.out.println( "Checking for students with no ARP records" );
-        ResultSet rs = cont.getResultSet( "SELECT STUDENTID FROM STUDENTRECORDS WHERE STUDENTID NOT IN ( SELECT DISTINCT USERID FROM RIERECORDS WHERE CATEGORY = 18 );" );
         
-        ArrayList<String> escapees = new ArrayList<>();
-        
-        try{
-            while( rs.next() )
-                escapees.add( rs.getString( "STUDENTID"  ) );
-        }
-        catch( SQLException ex ){}
-            
-        Collections.sort( escapees );
-        
-        ArrayList<Integer> toColour = new ArrayList<>();
+        ArrayList<Integer> toColour = new ArrayList<Integer>();
         for( int a = 0; a < jTable1.getRowCount(); a++ ){
-            System.out.println( jTable1.getModel().getValueAt(a, 0) );
-            if( Arrays.binarySearch( escapees.toArray(), (String) jTable1.getModel().getValueAt( a, 0 ) ) >= 0 )
+            if( ( (String) jTable1.getModel().getValueAt( a, 2 ) ).equals( "No" ) )
                 toColour.add(a);
         }
         
