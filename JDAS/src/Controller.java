@@ -94,7 +94,7 @@ public class Controller {
     }//to be improved
     
     public void mergeAndUpdate (String tblname, File file, Component com) throws Exception {
-      JOptionPane.showMessageDialog(com, tblname);
+      
         ArrayList<ArrayList<String> > addList = parseCSV(file);
         for(ArrayList<String> list: addList){
             ResultSet rs = m.hasConflict(tblname, list);
@@ -165,6 +165,13 @@ public class Controller {
         }
         System.out.println("Controller's deleteRecord()");
         m.deleteRecord(tableName, id);
+    }
+    
+    public ResultSet checkPublication(){
+        
+        return m.checkPubAndRec();
+        
+
     }
     
 }

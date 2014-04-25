@@ -100,6 +100,7 @@ public class ViewIntPublications extends javax.swing.JFrame implements Observer 
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.setCellSelectionEnabled(true);
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Done");
