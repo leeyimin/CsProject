@@ -214,6 +214,16 @@ public class MainJFrame extends javax.swing.JFrame implements Observer{
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        ViewStudentRecords v;
+        try {
+            v = new ViewStudentRecords(co);
+            v.setLocationRelativeTo( this );
+            v.setVisible( true );
+        }
+        catch ( SQLException ex ){
+            Logger.getLogger( ViewRIERecords.class.getName() ).log( Level.SEVERE, null, ex );
+            JOptionPane.showMessageDialog( this, "Error connecting to database." );
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed

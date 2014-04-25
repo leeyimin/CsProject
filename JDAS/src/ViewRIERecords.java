@@ -170,15 +170,6 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
     private void refresh(){
         
         int index = jComboBox1.getSelectedIndex();
-        String[] queries = new String[]{
-            "select id, userid, category, title, desc1, desc2, award, year, score from rierecords;", 
-            "SELECT ID, USERID, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 14;",
-            "SELECT ID, USERID, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 15;",
-            "SELECT ID, USERID, DESC1, AWARD, YEAR FROM RIERECORDS WHERE CATEGORY = 16;",
-            "SELECT ID, USERID, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 17;",
-            "SELECT ID, USERID, TITLE, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 18 OR CATEGORY = 19;",
-            "SELECT ID, USERID, DESC1, YEAR FROM RIERECORDS WHERE CATEGORY = 20;"
-        };
         String query = "SELECT ID, USERID, TITLE, DESC1, DESC2, AWARD, YEAR, SCORE FROM RIERECORDS WHERE CATEGORY = ";
         //ID is also taken just to make things easier for discrepancy checks.
         //I'm not going to use the ResultSet, and stick with only the Table's content.
@@ -335,51 +326,6 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
     @Override
     public void update(Observable o, Object arg) {
         refresh();
-    }
-
-    private class CellColourer extends DefaultTableCellRenderer{
-        ArrayList<Integer> discrepancies;
-
-        public CellColourer(){
-            discrepancies = new ArrayList<Integer>();
-        }
-
-        public void setDiscrepancies( ArrayList<Integer> toColour ){
-            discrepancies = toColour;
-        }
-
-        public void clearDiscrepancies(){
-            discrepancies.clear();
-        }
-
-        @Override
-        public Component getTableCellRendererComponent( JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col ){
-            Component c = super.getTableCellRendererComponent( table, value, isSelected, hasFocus, row, col );
-
-            if( Arrays.binarySearch( discrepancies.toArray(), row ) >= 0 ){
-                if( isSelected ){
-                    c.setBackground( Color.RED );
-                }
-                else{
-                    if( row%2 == 0 )
-                        c.setBackground( Color.YELLOW );
-                    else
-                        c.setBackground( new Color( 255, 255, 130 ) );
-                }
-            }
-            else{
-                if( isSelected )
-                    c.setBackground( new Color( 57, 105, 138 ) );
-                else{
-                    if( row%2 == 0 )
-                        c.setBackground( Color.WHITE );
-                    else
-                        c.setBackground( new Color( 242, 242, 242 ) );
-                }
-            }
-                
-            return c;
-        }
     }
 
     @Override

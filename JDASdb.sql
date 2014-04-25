@@ -29,3 +29,9 @@ CREATE TABLE rierecords (
   PRIMARY KEY (id)
 );
 
+CREATE TABLE studentrecords (
+	studentID		varchar(8)		NOT NULL,
+	name			varchar(100)	NOT NULL,
+	PRIMARY KEY (studentID)
+);
+	
