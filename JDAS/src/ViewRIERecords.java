@@ -13,6 +13,9 @@ import java.sql.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +23,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 /**
@@ -32,10 +36,10 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
     ArrayList<String> categories;
     DefaultTableColumnModel dtcm ;
     /** Creates new form ViewRIERecords */
-    
+
     Hashtable<Integer, String> allCategories = new Hashtable<Integer, String>();
     Hashtable<String, Integer> allCategoriesRev = new Hashtable<String, Integer>();
-    
+
     public ViewRIERecords( Controller cont ) throws SQLException {
         allCategories.put(19, "Other research project");
         allCategories.put(14, "Publication");
@@ -44,7 +48,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         allCategories.put(17, "Science fair/forum");
         allCategories.put(18, "Advanced Research Project");
         allCategories.put(20, "Other research activity");
-        
+
         allCategoriesRev.put("Other research project", 19);
         allCategoriesRev.put("Publication", 14);
         allCategoriesRev.put("Intl. scientific conference", 15);
@@ -52,27 +56,27 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         allCategoriesRev.put("Science fair/forum", 17);
         allCategoriesRev.put("Advanced Research Project", 18);
         allCategoriesRev.put("Other research activity", 20);
-        
+
         this.cont = cont;
-        
+
         this.cont.addObserverToModel(this);
 
-        ResultSet rs = cont.getResultSet("select distinct category from rierecords;"); 
+        ResultSet rs = cont.getResultSet("select distinct category from rierecords;");
         int catCount = 0;
-        
+
         categories = new ArrayList<String>(catCount+1);
         categories.add("All");
-        
+
         while (rs.next()) {
             categories.add( allCategories.get( Integer.parseInt( rs.getString(1) )) );
         }
- 
+
         initComponents();
         jTable1.setDefaultRenderer( Object.class, new CellColourer() );
-        
-        rs = cont.getResultSet("select id, userid, category, title, desc1, desc2, award, year, score from rierecords;"); 
+
+        rs = cont.getResultSet("select id, userid, category, title, desc1, desc2, award, year, score from rierecords;");
         updateTable(rs);
-        
+
     }
 
     /** This method is called from within the constructor to
@@ -90,6 +94,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("View RIE Records");
@@ -127,6 +132,13 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
             }
         });
 
+        jButton3.setLabel("Export records to CSV");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -141,6 +153,8 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
                         .addComponent(jComboBox1, 0, 809, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2)))
                 .addContainerGap())
@@ -157,20 +171,21 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {                                           
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {
         refresh();
 
-    }                                                                          
+    }
 
     private void refresh(){
-        
+
         int index = jComboBox1.getSelectedIndex();
         String query = "SELECT ID, USERID, TITLE, DESC1, DESC2, AWARD, YEAR, SCORE FROM RIERECORDS WHERE CATEGORY = ";
         //ID is also taken just to make things easier for discrepancy checks.
@@ -189,9 +204,9 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
                 Logger.getLogger(ViewRIERecords.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
 
-    }                                          
+
+    }
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         System.out.println( jTable1.getColumnModel().getColumn(1).getHeaderValue() );
@@ -199,10 +214,10 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         for ( int k = selected.length - 1; k >= 0; k-- ) {
             int i = selected[k];
             i = Integer.parseInt((String) jTable1.getModel().getValueAt(i, 0));
-            
+
             cont.deleteRecord(cont.RIE, i);
         }
-        
+
         //update table
         jComboBox1ActionPerformed(null);
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -210,6 +225,37 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        JFileChooser fc = new JFileChooser(){
+            @Override
+            public void approveSelection(){
+                File f = getSelectedFile();
+                if(f.exists() && getDialogType() == SAVE_DIALOG){
+                    int result = JOptionPane.showConfirmDialog(this,"The file already exists. Is it okay to overwrite it?","Existing file",JOptionPane.YES_NO_OPTION);
+                    switch(result){
+                        case JOptionPane.YES_OPTION:
+                            super.approveSelection();
+                            return;
+                        default:
+                            return;
+                    }
+                }
+                super.approveSelection();
+            }
+        };
+            
+        fc.setSelectedFile( new File( "RIERecords.csv" ) );
+        FileNameExtensionFilter filter = new FileNameExtensionFilter( ".CSV Files", "csv" );
+        fc.setFileFilter( filter );
+        
+        int returnVal = fc.showSaveDialog( this );
+
+        if( returnVal == JFileChooser.APPROVE_OPTION ){
+            exportToCsv( fc.getSelectedFile() );
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     public void checkForDiscrepancies(){
         System.out.println( "Checking for discrepancies..." );
@@ -223,19 +269,19 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
             if( jTable1.getColumnModel().getColumn(a).getHeaderValue().equals( "desc1" ) )
                 desc = a;
         }
-        
+
         if( title == -1 || id == -1 || desc == -1 ) return;
         //Perhaps an exception
 
         ArrayList< String[] > records = new ArrayList< String[] >();
         String[] nextRecord = new String[4];
-        
+
         for( int a = 0; a < row; a++ ){
             nextRecord[0] = (String) jTable1.getModel().getValueAt( a, id );
             nextRecord[1] = (String) jTable1.getModel().getValueAt( a, title );
             nextRecord[2] = (String) jTable1.getModel().getValueAt( a, desc );
             nextRecord[3] = Integer.toString( a );
-            
+
             String[] toAdd = nextRecord.clone();
             records.add( toAdd );
         }
@@ -270,7 +316,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         Collections.sort( toColour );
         ( (CellColourer) jTable1.getDefaultRenderer( Object.class ) ).setDiscrepancies( toColour );
         jTable1.repaint();
-        
+
         System.out.println( "Discrepancy Check Finished." );
     }
 
@@ -289,10 +335,10 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
 
             int colCount = resultSet.getMetaData().getColumnCount();
             int selectedOption = jComboBox1.getSelectedIndex();
-            
+
             dtm.setColumnCount(colCount);
-            
-            while( resultSet.next() ) { 
+
+            while( resultSet.next() ) {
                 for( int a = 1; a <= colCount; a++ ) {
                     if (selectedOption == 0 && a == 3) {
                         //change category to String representation
@@ -300,11 +346,13 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
                         System.out.println(allCategories.get( (Integer) resultSet.getObject(a) ));
                     }
                     else nextRow.add(resultSet.getString(a));
+
+                    System.out.println( resultSet.getString(a).equals("") );
                 }
 
                 dtm.addRow( nextRow.toArray() );
                 nextRow.clear();
-            } 
+            }
 
             dtm.addTableModelListener(this);
             jTable1.setModel( dtm );
@@ -321,7 +369,7 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
 
     public void checkForPublication() throws SQLException{
         ArrayList<Integer> toColour = new ArrayList<Integer>();
-        
+
         int id = -1;
         int column = jTable1.getColumnCount(), row = jTable1.getRowCount();
         for( int a = 0; a < column; a++ ){
@@ -343,9 +391,48 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
         jTable1.repaint();
     }
 
+    private void exportToCsv( File file ){
+        ResultSet resultSet = cont.getResultSet( "SELECT CATEGORY, TITLE, DESC1, DESC2, AWARD, YEAR, SCORE, USERID FROM RIERECORDS;" );
+        //Yi Min says that this method should only export fields of interest.
+        //Hence the first 4 fields are ignored.
+        //Checked_out_time causes problems anyway.
+        
+        try( FileOutputStream fos = new FileOutputStream( file ) ){
+            if( !file.exists() )
+                file.createNewFile();
+
+            String records = "", next;
+            int columnCount = resultSet.getMetaData().getColumnCount();
+
+            while( resultSet.next() ){
+                for( int a = 1; a <= columnCount; a++ ){
+                    next = resultSet.getString(a);
+                    if( !next.equals( "" ) )
+                        records = records.concat( "\"" + next + "\"" );
+                    if( a == columnCount )
+                        records = records.concat( "\n" );
+                    else
+                        records = records.concat( "," );
+                }
+            }
+
+            fos.write( records.getBytes() );
+            fos.flush();
+            fos.close();
+            
+            System.out.println( "Export successful" );
+        }
+        catch( Exception e ){
+            System.out.println( "輸出は失敗しました。" );
+            System.out.println( e.getMessage() );
+        }
+        
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -360,18 +447,18 @@ public class ViewRIERecords extends javax.swing.JFrame implements TableModelList
     @Override
     public void tableChanged(TableModelEvent e) {
         System.out.println("Table changed.");
-        
+
         int row = e.getFirstRow();
-        int col = e.getColumn(); 
-        
-        String colName = (String) dtcm.getColumn(col).getHeaderValue(); 
+        int col = e.getColumn();
+
+        String colName = (String) dtcm.getColumn(col).getHeaderValue();
         //TODO this is sort of a hack bc column name may not be the table name. cahnge later
         String newValue = (String) jTable1.getModel().getValueAt(row, col);
         //TODO SANITIZE INPUT
         System.out.println("New value = " + newValue);
-        
+
         int id = Integer.parseInt((String) jTable1.getModel().getValueAt(row, 0)); //hardcoding...
-        
+
         cont.updateIndividualRecord(Controller.RIE, id, colName, newValue);
     }
 
