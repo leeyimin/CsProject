@@ -54,25 +54,19 @@ public class Model extends Observable {
         }
     }
     */
-    public boolean updatePublication (File pFile){
-        try {
-            Statement stmt = conn.createStatement();
-            String delQuery = "DELETE FROM publication";
-            stmt.executeUpdate(delQuery);
-            
-            //System.out.println(pFile.getAbsolutePath());
-            String loadQuery= "LOAD DATA LOCAL INFILE \'" + pFile.getAbsolutePath().replace("\\", "\\\\")
-                    + "\' INTO TABLE publication FIELDS TERMINATED BY \',\'" 
-                    +" OPTIONALLY ENCLOSED BY \'\"\'"
-                    +" LINES TERMINATED BY \'\\n\'";
-            stmt.executeUpdate(loadQuery);
+    public void upload(String tblname, File pFile) throws SQLException{
+        Statement stmt = conn.createStatement();
+        String delQuery = "DELETE FROM "+tblname;
+        stmt.executeUpdate(delQuery);
 
-            return true;
-        } catch (SQLException ex) {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println(ex.getMessage());
-        }
-        return false;
+        String loadQuery= "LOAD DATA LOCAL INFILE \'" + pFile.getAbsolutePath().replace("\\", "\\\\")
+                + "\' INTO TABLE "+tblname
+                + " FIELDS TERMINATED BY \',\'" 
+                +" OPTIONALLY ENCLOSED BY \'\"\'"
+                +" LINES TERMINATED BY \'\\n\'";
+        stmt.executeUpdate(loadQuery);
+        setChanged();
+        notifyObservers();
     }
 
     public void connect(){
@@ -82,7 +76,7 @@ public class Model extends Observable {
             String url = "jdbc:mysql://localhost:3306/";
             String dbName = "JDASdb";
             String userName = "root";
-            String password = "";
+            String password = "65644157";
             
             //Create a connect object (via getConnection)
             conn = DriverManager.getConnection(url+dbName,userName,password);
@@ -149,7 +143,10 @@ public class Model extends Observable {
             boolean flag=false;
             rs.next();
             for(int i=6;i<=13;i++){
-                if(!rs.getString(i).equals(list.get(i-1)))flag=true;
+                String cStr;
+                cStr=rs.getString(i);
+                if(cStr==null)cStr="";
+                if(!cStr.equals(list.get(i-1)))flag=true;
             }
             if(flag)return rs;
             
@@ -162,17 +159,21 @@ public class Model extends Observable {
             boolean flag=false;
             rs.next();
             for(int i=1;i<=3;i++){
-                if(!rs.getString(i).equals(list.get(i-1)))flag=true;
+                String cStr;
+                cStr=rs.getString(i);
+                if(cStr==null)cStr="";
+                if(!cStr.equals(list.get(i-1)))flag=true;
             }
             if(flag)return rs;
         }
         return null;
     }
 
-    public void addRecord(String tblname, ArrayList<String> list) throws SQLException {
+    public void addRecord(String tblname, ArrayList<String> list) throws SQLException, Exception {
         Statement stmt = conn.createStatement();
         
         if(tblname.equals("rierecords")){
+            if(list.size()!=13)throw new Exception("File may not be correctly formatted");
             stmt.executeUpdate("DELETE FROM "+tblname+" WHERE id="+list.get(0));
             String addQuery ="INSERT INTO "+tblname+"() VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(addQuery);
@@ -184,6 +185,7 @@ public class Model extends Observable {
             ps.executeUpdate();
         }
         else if(tblname.equals("publication")){
+            if(list.size()!=3)throw new Exception("File may not be correctly formatted");
             stmt.executeUpdate("DELETE FROM "+tblname+" WHERE title=\""+list.get(0)+"\"");
             String addQuery ="INSERT INTO publication() VALUES(?,?,?)";
             PreparedStatement ps = conn.prepareStatement(addQuery);

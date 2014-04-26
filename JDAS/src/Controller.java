@@ -2,6 +2,7 @@
 import java.awt.*;
 import java.io.*;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import javax.swing.*;
 
@@ -33,21 +34,14 @@ public class Controller {
         m.addObserver(o);
     }
     
-/*
+
     
-    public void uploadPublication (File pFile) throws FileNotFoundException {
-        boolean flag=m.updatePublication(pFile);
-        if(flag==true){
-            setChanged();
-            updateStr = "Publication List (internal)";
-            notifyObservers();
-            System.out.println(this.countObservers());
-        }
-        else{
-            
-        }//to be updated
+    public void upload(String tblname, File pFile, Component com) throws FileNotFoundException, SQLException {
+        m.upload(tblname, pFile);
+        JOptionPane.showMessageDialog(com, "The records have been updated.");
+        
     }
-    */
+    
     public ArrayList<ArrayList<String> > parseCSV (File cFile) throws FileNotFoundException{
         //this assumes that every field is surrounded by " and separated by ,
         ArrayList< ArrayList<String> > res = new ArrayList< ArrayList<String> >();
@@ -66,6 +60,7 @@ public class Controller {
                         case '\"':{
                             open=false;
                             list.add(line.substring(prev,i));
+                            prev=i+1;
                             break;
                         }
                     }
@@ -81,12 +76,16 @@ public class Controller {
                         }
                         case ',':{
                             if(pComm)list.add("");
+                            else if(prev!=i)  list.add(line.substring(prev,i));
+                            //require further checking
                             pComm=true;
+                            prev=i+1;
                             break;
                         }
                     }
                 }
             }
+            if(line.charAt(line.length()-1)!=','&&line.charAt(line.length()-1)!='\"')list.add(line.substring(prev,line.length()));
             res.add(list);
         }
         

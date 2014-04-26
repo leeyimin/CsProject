@@ -186,8 +186,6 @@ public class MainJFrame extends javax.swing.JFrame implements Observer{
         int returnVal = fc.showOpenDialog(this);
         
         if(returnVal == JFileChooser.APPROVE_OPTION) {
-            System.out.println("You chose to open this file: " +
-                fc.getSelectedFile().getName());
             try {
                 co.mergeAndUpdate("publication", fc.getSelectedFile(),this);
             } catch (Exception ex) {
