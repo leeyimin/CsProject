@@ -19,41 +19,7 @@ public class Model extends Observable {
         connect();
     }
    
-/*
-    // <editor-fold defaultstate="collapsed" desc=" UML Marker "> 
-    // #[regen=yes,id=DCE.410FB467-F179-4E58-95DD-9C8641A0320F]
-    // </editor-fold> 
-    public boolean updatePublication (ArrayList<ArrayList<String>> list){
-        try {
-            Statement stmt = conn.createStatement();
-            String delQuery = "DELETE FROM publication";
-            stmt.executeUpdate(delQuery);
-            
-            int count =0, icount=1;
-            String addQuery ="INSERT INTO publication() VALUES(?,?,?,?)";
-            PreparedStatement ps = conn.prepareStatement(addQuery);
-            
-            for(ArrayList<String> r: list){
-                icount=1;
-                ps.setInt(icount, count);
-                count++;
-                icount++;
-                for(String str:r){
-                    ps.setString(icount, str);
-                    icount++;
-                }
-                ps.executeUpdate();
-            }
-            
-            return true;
-        } catch (SQLException ex) {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        finally{
-            return false;
-        }
-    }
-    */
+
     public void upload(String tblname, File pFile) throws SQLException{
         Statement stmt = conn.createStatement();
         String delQuery = "DELETE FROM "+tblname;
@@ -86,41 +52,7 @@ public class Model extends Observable {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
- /*  
-    public boolean mergeAndUpdateRIERecords(ArrayList<ArrayList<String>> list) {
-        try {
-            Statement stmt = conn.createStatement();
-            
-            int count = 0, icount = 1;
-                //TODO replace table name, insert set of 13 values???
-            String addQuery ="INSERT INTO _____() VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            PreparedStatement ps = conn.prepareStatement(addQuery);
-            
-            for(ArrayList<String> r: list){
-                icount = 1;
-                ps.setInt(icount, count);
-                count++;
-                icount++;
-                for(String str:r){
-                    ps.setString(icount, str);
-                    icount++;
-                }
-                ps.executeUpdate();
-            }
-            
-            return true;
-        } catch (SQLException ex) {
-            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
-            //TODO propagate this up?
-        }
-        finally{
-            return false;
-        }
-        
-        
-        
-        
-    }*/
+ 
     
     public ResultSet getResultSet(String s) {
         try {

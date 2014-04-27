@@ -47,10 +47,13 @@ public class Controller {
         ArrayList< ArrayList<String> > res = new ArrayList< ArrayList<String> >();
         Scanner sc= new Scanner(cFile);
         StringTokenizer st;
-        boolean open = false, pComm=false;
+        boolean open, pComm;
         int prev=0;
         ArrayList<String> list;
         while(sc.hasNextLine()){
+            open=false;
+            pComm=true;
+            prev=0;
             String line=sc.nextLine();
             list=new ArrayList<String>();
             for(int i=0;i<line.length();i++){
@@ -82,10 +85,14 @@ public class Controller {
                             prev=i+1;
                             break;
                         }
+                        default:{
+                            pComm=false;
+                        }
                     }
                 }
             }
             if(line.charAt(line.length()-1)!=','&&line.charAt(line.length()-1)!='\"')list.add(line.substring(prev,line.length()));
+            
             res.add(list);
         }
         
