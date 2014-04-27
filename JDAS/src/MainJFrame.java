@@ -177,7 +177,16 @@ public class MainJFrame extends javax.swing.JFrame implements Observer{
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+       JFileChooser fc = new JFileChooser();
+        int returnVal = fc.showOpenDialog(this);
+        
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+            try {
+                co.upload("studentrecords", fc.getSelectedFile(),this);
+            } catch (Exception ex) {
+                Logger.getLogger(MainJFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

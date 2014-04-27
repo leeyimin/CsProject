@@ -115,7 +115,8 @@ public class ParseTest {
             }
             assertEquals(str,"\n\nyes19983,789\n\n"
                     + "123\n\nokay,2920,321\n\n"
-                    + "12983\n232\nsixty\n\n");
+                    + "12983\n232\nsixty\n\n"
+                    + "fine,haha\n1231\n\n\n");
             
             
         } catch (FileNotFoundException ex) {

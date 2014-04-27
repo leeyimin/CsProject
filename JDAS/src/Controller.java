@@ -91,6 +91,7 @@ public class Controller {
                     }
                 }
             }
+            if(line.charAt(line.length()-1)==',')list.add("");
             if(line.charAt(line.length()-1)!=','&&line.charAt(line.length()-1)!='\"')list.add(line.substring(prev,line.length()));
             
             res.add(list);
